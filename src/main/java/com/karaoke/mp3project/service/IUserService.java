@@ -1,4 +1,4 @@
 package com.karaoke.mp3project.service;
 
-public interface UserService {
+public interface IUserService {
 }

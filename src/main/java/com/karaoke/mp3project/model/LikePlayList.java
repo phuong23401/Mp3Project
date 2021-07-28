@@ -3,12 +3,12 @@ package com.karaoke.mp3project.model;
 import javax.persistence.*;
 
 @Entity
-public class CommentPlaylist {
+public class LikePlayList {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
-    private String content;
+    private boolean status = false;
 
     @ManyToOne
     @JoinColumn(name = "user")
@@ -16,14 +16,14 @@ public class CommentPlaylist {
 
     @ManyToOne
     @JoinColumn(name = "playlist")
-    private Playlist playlist;
+    private PlayList playlist;
 
-    public CommentPlaylist() {
+    public LikePlayList() {
     }
 
-    public CommentPlaylist(Long id, String content, User user, Playlist playlist) {
+    public LikePlayList(Long id, boolean status, User user, PlayList playlist) {
         this.id = id;
-        this.content = content;
+        this.status = status;
         this.user = user;
         this.playlist = playlist;
     }
@@ -36,12 +36,12 @@ public class CommentPlaylist {
         this.id = id;
     }
 
-    public String getContent() {
-        return content;
+    public boolean isStatus() {
+        return status;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public User getUser() {
@@ -52,11 +52,11 @@ public class CommentPlaylist {
         this.user = user;
     }
 
-    public Playlist getPlaylist() {
+    public PlayList getPlaylist() {
         return playlist;
     }
 
-    public void setPlaylist(Playlist playlist) {
+    public void setPlaylist(PlayList playlist) {
         this.playlist = playlist;
     }
 }

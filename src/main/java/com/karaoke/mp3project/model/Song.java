@@ -54,12 +54,12 @@ public class Song {
             joinColumns = {@JoinColumn(name = "song_id")},
             inverseJoinColumns = {@JoinColumn(name = "playlist_id")})
     @JsonIgnoreProperties("songs")
-    private Set<Playlist> playlist;
+    private Set<PlayList> playlist;
 
     public Song() {
     }
 
-    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, Category category, Set<Singer> singer, Set<Playlist> playlist) {
+    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, Category category, Set<Singer> singer, Set<PlayList> playlist) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -74,7 +74,7 @@ public class Song {
         this.playlist = playlist;
     }
 
-    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, String lyric, User user, Category category, Set<Singer> singer, Set<Playlist> playlist) {
+    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, String lyric, User user, Category category, Set<Singer> singer, Set<PlayList> playlist) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -195,11 +195,11 @@ public class Song {
         this.singer = singer;
     }
 
-    public Set<Playlist> getPlaylist() {
+    public Set<PlayList> getPlaylist() {
         return playlist;
     }
 
-    public void setPlaylist(Set<Playlist> playlist) {
+    public void setPlaylist(Set<PlayList> playlist) {
         this.playlist = playlist;
     }
 }
