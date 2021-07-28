@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
-public class Playlist {
+public class PlayList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,10 +41,10 @@ public class Playlist {
     @JsonIgnoreProperties("playlists")
     private Set<Song> songs;
 
-    public Playlist() {
+    public PlayList() {
     }
 
-    public Playlist(Long id, String name, String avatarUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, Long listen, User user, Set<Song> songs) {
+    public PlayList(Long id, String name, String avatarUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, Long listen, User user, Set<Song> songs) {
         this.id = id;
         this.name = name;
         this.avatarUrl = avatarUrl;
