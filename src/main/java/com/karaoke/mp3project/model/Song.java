@@ -32,7 +32,9 @@ public class Song {
     private Timestamp createdTime;
     private Timestamp updatedTime;
     private Long countLike = 0L;
-
+    private String lyric;
+    @ManyToOne
+    private User user;
     @ManyToOne
     private Category category;
 
@@ -70,6 +72,39 @@ public class Song {
         this.category = category;
         this.singer = singer;
         this.playlist = playlist;
+    }
+
+    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, String lyric, User user, Category category, Set<Singer> singer, Set<Playlist> playlist) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.tags = tags;
+        this.avatarUrl = avatarUrl;
+        this.fileUrl = fileUrl;
+        this.createdTime = createdTime;
+        this.updatedTime = updatedTime;
+        this.countLike = countLike;
+        this.lyric = lyric;
+        this.user = user;
+        this.category = category;
+        this.singer = singer;
+        this.playlist = playlist;
+    }
+
+    public String getLyric() {
+        return lyric;
+    }
+
+    public void setLyric(String lyric) {
+        this.lyric = lyric;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Long getId() {

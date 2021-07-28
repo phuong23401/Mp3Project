@@ -41,6 +41,27 @@ public class User {
     public User() {
     }
 
+    public User(String name, String email, String username, String password, String gender, String hobbies, String avatarUrl, Set<Role> role) {
+        this.name = name;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.gender = gender;
+        this.hobbies = hobbies;
+        this.avatarUrl = avatarUrl;
+        this.role = role;
+    }
+
+    public User(String name, String email, String username, String password, String gender, String hobbies, String avatarUrl) {
+        this.name = name;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.gender = gender;
+        this.hobbies = hobbies;
+        this.avatarUrl = avatarUrl;
+    }
+
     public User(Long id, String name, String email, String username, String password, String gender, String hobbies, String avatarUrl, Set<Role> role) {
         this.id = id;
         this.name = name;
