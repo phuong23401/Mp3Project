@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
 @Service
-public class SingerServiceImpl implements ISingerService {
+public class SingerService implements ISingerService {
 
     @Autowired
     private SingerRepo singerRepo;

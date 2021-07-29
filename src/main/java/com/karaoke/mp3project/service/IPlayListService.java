@@ -7,7 +7,7 @@ import com.karaoke.mp3project.model.User;
 
 import java.util.ArrayList;
 
-public interface IPlaylistService {
+public interface IPlayListService {
     ArrayList<PlayList> findAll();
 
     Iterable<PlayList> findByUser(User user);

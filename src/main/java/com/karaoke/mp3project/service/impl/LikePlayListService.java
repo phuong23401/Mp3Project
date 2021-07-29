@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LikeplaylistServiceImpl implements ILikePlayListService {
+public class LikePlayListService implements ILikePlayListService {
     @Autowired
     private LikePlayListRepo likePlayListRepo;
 
