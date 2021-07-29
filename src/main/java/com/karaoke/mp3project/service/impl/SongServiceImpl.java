@@ -33,7 +33,7 @@ public class SongServiceImpl implements ISongService {
 
     @Override
     public Iterable<Song> findBySinger(Singer singer) {
-        return songRepo.findAllBySingers(singer);
+        return songRepo.findAllBySinger(singer);
     }
 
     @Override
