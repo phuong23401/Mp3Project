@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
 @Service
-public class SongServiceImpl implements ISongService {
+public class SongService implements ISongService {
 
     @Autowired
     private SongRepo songRepo;
@@ -33,7 +33,7 @@ public class SongServiceImpl implements ISongService {
 
     @Override
     public Iterable<Song> findBySinger(Singer singer) {
-        return songRepo.findAllBySingers(singer);
+        return songRepo.findAllBySinger(singer);
     }
 
     @Override

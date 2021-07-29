@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
 @Service
-public class PlaylistServiceImpl implements IPlaylistService {
+public class PlaylistService implements IPlaylistService {
 
     @Autowired
     private PlayListRepo playListRepo;
