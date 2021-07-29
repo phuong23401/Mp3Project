@@ -4,14 +4,14 @@ package com.karaoke.mp3project.service.impl;
 import com.karaoke.mp3project.model.PlayList;
 import com.karaoke.mp3project.model.User;
 import com.karaoke.mp3project.repo.PlayListRepo;
-import com.karaoke.mp3project.service.IPlaylistService;
+import com.karaoke.mp3project.service.IPlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
 @Service
-public class PlaylistService implements IPlaylistService {
+public class PlayListService implements IPlayListService {
 
     @Autowired
     private PlayListRepo playListRepo;
