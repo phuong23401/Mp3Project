@@ -1,0 +1,30 @@
+package com.karaoke.mp3project.controller;
+
+import com.karaoke.mp3project.model.Category;
+import com.karaoke.mp3project.service.impl.CateServiceImp;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
+@RequestMapping("/category")
+@Repository
+@CrossOrigin(origins = "*")
+public class CategoryController {
+    @Autowired
+    private CateServiceImp cateServiceImp;
+
+    @GetMapping(value = "categories",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Category>> getAllCategories(){
+        List<Category> categories = cateServiceImp.getAll();
+        if (categories.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
+ }
