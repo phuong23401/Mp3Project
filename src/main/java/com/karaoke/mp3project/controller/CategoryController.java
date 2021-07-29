@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 @RequestMapping("/category")
 @Repository
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class CategoryController {
     @Autowired
     private CateServiceImp cateServiceImp;

@@ -74,6 +74,17 @@ public class User {
         this.role = role;
     }
 
+    public User(String name, String gender, String hobbies, String avatarUrl) {
+        this.name = name;
+        this.gender = gender;
+        this.hobbies = hobbies;
+        this.avatarUrl = avatarUrl;
+    }
+
+    public User(String password) {
+        this.password = password;
+    }
+
     public Long getId() {
         return id;
     }
