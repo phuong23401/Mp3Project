@@ -82,15 +82,19 @@ public class AuthController {
                     .badRequest()
                     .body(new MessageResponse("Email đã được sử dụng!"));
         }
-
-        User users = new User(signupRequest.getUsername(),
+//        String name, String email, String username, String password, String gender, String hobbies, String avatarUrl) {
+        User users = new User(signupRequest.getName(),
                 signupRequest.getEmail(),
+                signupRequest.getUsername(),
                 encoder.encode(signupRequest.getPassword()),
                 signupRequest.getGender(),
-                signupRequest.getAvatarUrl(),
-                signupRequest.getName(),
-                signupRequest.getHobbies()
+                signupRequest.getHobbies(),
+                signupRequest.getAvatarUrl()
+
+
         );
+        System.out.println(signupRequest.getPassword());
+        System.out.println(users.getPassword());
 
         users.setAvatarUrl("https://cdn3.vectorstock.com/i/1000x1000/26/62/runner-avatar-figure-with-mp3-player-music-block-vector-32312662.jpg");
 

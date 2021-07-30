@@ -8,6 +8,7 @@ import com.karaoke.mp3project.model.User;
 import java.util.ArrayList;
 
 public interface ISongService {
+
     ArrayList<Song> findAll();
 
     Iterable<Song> findByName(String name);
