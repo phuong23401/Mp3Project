@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins ="*")
 @RequestMapping("song")
@@ -35,6 +36,17 @@ public class SongController {
         songService.saveSong(song);
         return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> deleteSong(@PathVariable Long id){
+        Optional<Song> song = songService.findOne(id);
+        if(!song.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        songService.deleteSong(song.get().getId());
+        return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
+    }
+
 
     @RequestMapping(value = "/songs", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Song>> getAllSong() {
