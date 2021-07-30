@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins ="*")
+@CrossOrigin(origins = "*")
 @RequestMapping("song")
 @RestController
 public class SongController {
@@ -22,11 +22,11 @@ public class SongController {
     private SongService songService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createSong(@Valid @RequestBody Song song){
-        if(song.getAvatarUrl()==null||song.getAvatarUrl().trim().isEmpty()){
+    public ResponseEntity<?> createSong(@Valid @RequestBody Song song) {
+        if (song.getAvatarUrl() == null || song.getAvatarUrl().trim().isEmpty()) {
             return new ResponseEntity<>(new MessageResponse("noavatar"), HttpStatus.OK);
         }
-        if(song.getFileUrl()==null||song.getFileUrl().trim().isEmpty()){
+        if (song.getFileUrl() == null || song.getFileUrl().trim().isEmpty()) {
             return new ResponseEntity<>(new MessageResponse("nomp3url"), HttpStatus.OK);
         }
         Timestamp createdTime = new Timestamp(System.currentTimeMillis());
@@ -38,15 +38,38 @@ public class SongController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteSong(@PathVariable Long id){
+    public ResponseEntity<?> deleteSong(@PathVariable Long id) {
         Optional<Song> song = songService.findOne(id);
-        if(!song.isPresent()){
+        if (!song.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         songService.deleteSong(song.get().getId());
         return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
     }
 
+
+    @PutMapping("{id}")
+    public ResponseEntity<?> updateSong(@PathVariable Long id,
+                                        @Valid @RequestBody Song newSong){
+        Optional<Song> song = songService.findOne(id);
+        if (!song.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            if (newSong.getAvatarUrl() == null || newSong.getAvatarUrl().trim().isEmpty()) {
+                return new ResponseEntity<>(new MessageResponse("noavatar"), HttpStatus.OK);
+            }
+            if (newSong.getFileUrl() == null || newSong.getFileUrl().trim().isEmpty()) {
+                return new ResponseEntity<>(new MessageResponse("nomp3url"), HttpStatus.OK);
+            }
+            Timestamp createdTime = new Timestamp(System.currentTimeMillis());
+            Timestamp upDateTime = new Timestamp(System.currentTimeMillis());
+            newSong.setCreatedTime(createdTime);
+            newSong.setUpdatedTime(upDateTime);
+            newSong.setId(id);
+            songService.saveSong(newSong);
+            return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
+        }
+    }
 
     @RequestMapping(value = "/songs", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Song>> getAllSong() {
