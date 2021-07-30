@@ -9,8 +9,8 @@ public class Password {
         this.password = password;
         this.newPassword = newPassword;
     }
-    public Password(){
 
+    public Password(){
     }
 
     public String getPassword() {
