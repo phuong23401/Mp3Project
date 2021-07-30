@@ -21,6 +21,7 @@ public class CategoryController {
 
     @GetMapping(value = "categories",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Category>> getAllCategories(){
+
         List<Category> categories = cateServiceImp.getAll();
         if (categories.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
