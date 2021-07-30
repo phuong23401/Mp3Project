@@ -5,11 +5,13 @@ import com.karaoke.mp3project.model.Song;
 import com.karaoke.mp3project.service.impl.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.sql.Timestamp;
+import java.util.List;
 
 @CrossOrigin(origins ="*")
 @RequestMapping("song")
@@ -34,4 +36,12 @@ public class SongController {
         return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/songs", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Song>> getAllSong() {
+        List<Song> songList = songService.findAll();
+        if (songList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(songList, HttpStatus.OK);
+    }
 }
