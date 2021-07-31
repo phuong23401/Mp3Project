@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SongService implements ISongService {
@@ -43,8 +44,8 @@ public class SongService implements ISongService {
     }
 
     @Override
-    public Song findOne(Long id) {
-        return songRepo.findById(id).orElse(null);
+    public Optional<Song> findOne(Long id) {
+        return songRepo.findById(id);
     }
 
     @Override
