@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SongService implements ISongService {
@@ -54,5 +55,10 @@ public class SongService implements ISongService {
     @Override
     public void saveSong(Song song) {
         songRepo.save(song);
+    }
+
+    @Override
+    public List<Song> findAllByNameSong(String nameSong) {
+        return songRepo.findAllByNameSong(nameSong);
     }
 }

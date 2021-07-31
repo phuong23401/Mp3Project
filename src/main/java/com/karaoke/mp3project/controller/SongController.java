@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.util.List;
 
-@CrossOrigin(origins ="*")
+@CrossOrigin(origins = "*")
 @RequestMapping("song")
 @RestController
 public class SongController {
@@ -21,11 +21,11 @@ public class SongController {
     private SongService songService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createSong(@Valid @RequestBody Song song){
-        if(song.getAvatarUrl()==null||song.getAvatarUrl().trim().isEmpty()){
+    public ResponseEntity<?> createSong(@Valid @RequestBody Song song) {
+        if (song.getAvatarUrl() == null || song.getAvatarUrl().trim().isEmpty()) {
             return new ResponseEntity<>(new MessageResponse("noavatar"), HttpStatus.OK);
         }
-        if(song.getFileUrl()==null||song.getFileUrl().trim().isEmpty()){
+        if (song.getFileUrl() == null || song.getFileUrl().trim().isEmpty()) {
             return new ResponseEntity<>(new MessageResponse("nomp3url"), HttpStatus.OK);
         }
         Timestamp createdTime = new Timestamp(System.currentTimeMillis());
@@ -44,4 +44,12 @@ public class SongController {
         }
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/search-song", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Song>> searchNameSong(@RequestParam String name) {
+        String nameSong = "%" + name + "%";
+        List<Song> songList = songService.findAllByNameSong(nameSong);
+        return new ResponseEntity<>(songList, HttpStatus.OK);
+    }
+
 }
