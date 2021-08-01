@@ -51,5 +51,10 @@ public class SongController {
         List<Song> songList = songService.findAllByNameSong(nameSong);
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
+    @PostMapping("/search")
+    public ResponseEntity<Iterable<Song>> getAllSongByName(@RequestBody String name){
+        Iterable<Song> songs = songService.findByName(name);
+        return new ResponseEntity<>(songs, HttpStatus.OK);
+    }
 
 }
