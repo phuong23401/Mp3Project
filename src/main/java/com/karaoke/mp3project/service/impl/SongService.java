@@ -49,6 +49,11 @@ public class SongService implements ISongService {
     }
 
     @Override
+    public Song findOneName(Long id) {
+        return songRepo.findById(id).orElse(null);
+    }
+
+    @Override
     public void deleteSong(Long id) {
         songRepo.deleteById(id);
     }

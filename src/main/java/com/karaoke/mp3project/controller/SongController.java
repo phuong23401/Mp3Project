@@ -91,5 +91,11 @@ public class SongController {
         Iterable<Song> songs = songService.findByName(name);
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
+    @GetMapping("/song/{id}")
+    public ResponseEntity<Song> getSongById(@PathVariable("id") Long id){
+        Song song = songService.findOneName(id);
+        return new ResponseEntity<>(song, HttpStatus.OK);
+    }
+
 
 }
