@@ -8,9 +8,6 @@ import com.karaoke.mp3project.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,4 +67,10 @@ public class UserController {
         return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
     }
 
+    @GetMapping("/getuser")
+    public ResponseEntity<User> getUserByToken() {
+        User userCurrent = userDtService.getCurrentUser();
+        System.out.println(userCurrent);
+        return new ResponseEntity<>(userCurrent, HttpStatus.OK);
+    }
 }
