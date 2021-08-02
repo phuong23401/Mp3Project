@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CateServiceImp  {
@@ -15,4 +16,8 @@ public class CateServiceImp  {
     public List<Category> getAll(){
         return categoryRepository.findAll();
     }
+    public Optional<Category> getCategoryById(Long id){
+        return categoryRepository.findById(id);
+    }
+
 }
