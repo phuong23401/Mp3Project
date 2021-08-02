@@ -33,10 +33,12 @@ public class Song {
     private Timestamp updatedTime;
     private Long countLike = 0L;
     private String lyric;
+    private Long numberOfView;
+
     @ManyToOne
     private User user;
     @ManyToOne
-    private Category category;
+    private Category categories;
 
     @ManyToMany
     @EqualsAndHashCode.Exclude
@@ -59,7 +61,7 @@ public class Song {
     public Song() {
     }
 
-    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, Category category, Set<Singer> singer, Set<PlayList> playlist) {
+    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, String lyric, Long numberOfView, User user, Category categories, Set<Singer> singer, Set<PlayList> playlist) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -69,12 +71,43 @@ public class Song {
         this.createdTime = createdTime;
         this.updatedTime = updatedTime;
         this.countLike = countLike;
-        this.category = category;
+        this.lyric = lyric;
+        this.numberOfView = numberOfView;
+        this.user = user;
+        this.categories = categories;
         this.singer = singer;
         this.playlist = playlist;
     }
 
-    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, String lyric, User user, Category category, Set<Singer> singer, Set<PlayList> playlist) {
+    public Song(@NotNull(message = "Vui lòng nhập tên bài hát!") @Size(max = 100, message = "Vui lòng nhập đúng tên bài hát!") String name, String description, @Size(max = 50, message = "Vui lòng không spam!") String tags, String avatarUrl, String fileUrl, Timestamp createdTime, String lyric, User user, Category categories, Set<Singer> singer) {
+        this.name = name;
+        this.description = description;
+        this.tags = tags;
+        this.avatarUrl = avatarUrl;
+        this.fileUrl = fileUrl;
+        this.createdTime = createdTime;
+        this.lyric = lyric;
+        this.user = user;
+        this.categories = categories;
+        this.singer = singer;
+    }
+
+    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, Category categories, Set<Singer> singer, Set<PlayList> playlist) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.tags = tags;
+        this.avatarUrl = avatarUrl;
+        this.fileUrl = fileUrl;
+        this.createdTime = createdTime;
+        this.updatedTime = updatedTime;
+        this.countLike = countLike;
+        this.categories = categories;
+        this.singer = singer;
+        this.playlist = playlist;
+    }
+
+    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, String lyric, User user, Category categories, Set<Singer> singer, Set<PlayList> playlist) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -86,9 +119,17 @@ public class Song {
         this.countLike = countLike;
         this.lyric = lyric;
         this.user = user;
-        this.category = category;
+        this.categories = categories;
         this.singer = singer;
         this.playlist = playlist;
+    }
+
+    public Long getNumberOfView() {
+        return numberOfView;
+    }
+
+    public void setNumberOfView(Long numberOfView) {
+        this.numberOfView = numberOfView;
     }
 
     public String getLyric() {
@@ -179,12 +220,12 @@ public class Song {
         this.countLike = countLike;
     }
 
-    public Category getCategory() {
-        return category;
+    public Category getCategories() {
+        return categories;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategories(Category categories) {
+        this.categories = categories;
     }
 
     public Set<Singer> getSinger() {

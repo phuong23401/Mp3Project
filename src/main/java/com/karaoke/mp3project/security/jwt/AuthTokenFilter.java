@@ -48,11 +48,21 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String parseJwt(HttpServletRequest request) {
-        String headerAuth = request.getHeader("Authorization");
+//    private String parseJwt(HttpServletRequest request) {
+//        String headerAuth = request.getHeader("Authorization");
+//
+//        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer")){
+//            return headerAuth.substring(7, headerAuth.length());
+//        }
+//
+//        return null;
+//    }
 
-        if(headerAuth !=null && headerAuth.startsWith("Bearer")){
-            return headerAuth.replace("Bearer", "");
+    private String parseJwt(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            return authHeader.replace("Bearer ", "");
         }
 
         return null;

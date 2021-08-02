@@ -29,4 +29,5 @@ public interface ISongService {
 
     void saveSong(Song song);
     List<Song> findAllByNameSong(String nameSong);
+    List<Song> findAllByCreationTimeOrderByCreationTime();
 }

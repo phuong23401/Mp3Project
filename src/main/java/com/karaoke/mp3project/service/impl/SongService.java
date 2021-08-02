@@ -73,4 +73,9 @@ public class SongService implements ISongService {
     public List<Song> findAllByNameSong(String nameSong) {
         return songRepo.findAllByNameSong(nameSong);
     }
+
+    @Override
+    public List<Song> findAllByCreationTimeOrderByCreationTime() {
+        return songRepo.findAllByNumberOfViewOrderByNumberOfView();
+    }
 }

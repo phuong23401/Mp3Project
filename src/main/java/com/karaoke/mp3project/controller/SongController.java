@@ -97,5 +97,10 @@ public class SongController {
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/top2mostlistened", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Song>> top10SongsNew() {
+        List<Song> songList = songService.findAllByCreationTimeOrderByCreationTime();
+        return new ResponseEntity<>(songList, HttpStatus.OK);
+    }
 
 }

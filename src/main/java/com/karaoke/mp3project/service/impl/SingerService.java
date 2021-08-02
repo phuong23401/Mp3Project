@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class SingerService implements ISingerService {
@@ -26,12 +27,17 @@ public class SingerService implements ISingerService {
     }
 
     @Override
-    public Singer findOne(Long id) {
-        return singerRepo.findById(id).orElse(null);
+    public Optional<Singer> findOne(Long id) {
+        return singerRepo.findById(id);
     }
 
     @Override
     public void saveSinger(Singer singer) {
         singerRepo.save(singer);
+    }
+
+    @Override
+    public void deleteSinger(Long id) {
+        singerRepo.deleteById(id);
     }
 }
