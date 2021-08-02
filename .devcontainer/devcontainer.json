@@ -5,8 +5,8 @@
 	"build": {
 		"dockerfile": "Dockerfile",
 		"args": {
-			"INSTALL_MAVEN": "false",
-			"INSTALL_GRADLE": "false",
+			"INSTALL_MAVEN": "true",
+			"INSTALL_GRADLE": "true",
 			"INSTALL_NODE": "false",
 			"NODE_VERSION": "lts/*"
 		}
@@ -30,7 +30,7 @@
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [],
+	"forwardPorts": [8080],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "java -version",
