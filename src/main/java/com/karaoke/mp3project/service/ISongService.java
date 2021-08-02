@@ -6,6 +6,7 @@ import com.karaoke.mp3project.model.Song;
 import com.karaoke.mp3project.model.User;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public interface ISongService {
@@ -21,8 +22,12 @@ public interface ISongService {
     Iterable<Song> findAllByLike();
 
     Optional<Song> findOne(Long id);
+    Song findOneName(Long id);
+
 
     void deleteSong(Long id);
 
     void saveSong(Song song);
+    List<Song> findAllByNameSong(String nameSong);
+    List<Song> findAllByCreationTimeOrderByCreationTime();
 }

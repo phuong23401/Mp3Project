@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,6 +49,11 @@ public class SongService implements ISongService {
     }
 
     @Override
+    public Song findOneName(Long id) {
+        return songRepo.findById(id).orElse(null);
+    }
+
+    @Override
     public void deleteSong(Long id) {
         songRepo.deleteById(id);
     }
@@ -55,5 +61,15 @@ public class SongService implements ISongService {
     @Override
     public void saveSong(Song song) {
         songRepo.save(song);
+    }
+
+    @Override
+    public List<Song> findAllByNameSong(String nameSong) {
+        return songRepo.findAllByNameSong(nameSong);
+    }
+
+    @Override
+    public List<Song> findAllByCreationTimeOrderByCreationTime() {
+        return songRepo.findAllByNumberOfViewOrderByNumberOfView();
     }
 }
