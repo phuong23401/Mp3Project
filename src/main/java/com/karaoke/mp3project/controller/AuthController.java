@@ -59,18 +59,20 @@ public class AuthController {
         String jwt = jwtUtils.generateJwtToken(authentication);
         System.out.println(jwt);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        System.out.println(userDetails.getName());
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
-                userDetails.getUser()
+                userDetails.getName()
         ));
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> responseEntity(@Valid @RequestBody SignupRequest signupRequest){
+    public ResponseEntity<MessageResponse> responseEntity(@Valid @RequestBody SignupRequest signupRequest){
+        System.out.println(signupRequest);
         if (userRepo.existsUsersByUsername(signupRequest.getUsername())){
             return ResponseEntity
                     .badRequest()
@@ -83,16 +85,12 @@ public class AuthController {
                     .body(new MessageResponse("Email đã được sử dụng!"));
         }
 //        String name, String email, String username, String password, String gender, String hobbies, String avatarUrl) {
-        User users = new User(signupRequest.getName(),
-                signupRequest.getEmail(),
-                signupRequest.getUsername(),
-                encoder.encode(signupRequest.getPassword()),
-                signupRequest.getGender(),
-                signupRequest.getHobbies(),
-                signupRequest.getAvatarUrl()
+        User users = new User();
+        users.setName(signupRequest.getName());
+        users.setUsername(signupRequest.getUsername());
+        users.setEmail(signupRequest.getEmail());
+        users.setPassword(encoder.encode(signupRequest.getPassword()));
 
-
-        );
         System.out.println(signupRequest.getPassword());
         System.out.println(users.getPassword());
 
@@ -111,22 +109,7 @@ public class AuthController {
         }
         users.setRole(roles);
         userRepo.save(users);
-//        ArrayList<Song> songs = songService.findAll();
-//        ArrayList<Playlist> playlists = playlistService.findAll();
-//        for (Song song : songs){
-//            Likesong likesong = new Likesong();
-//            likesong.setUser(users);
-//            likesong.setSong(song);
-//            likesong.setStatus(false);
-//            likesongService.saveLikesong(likesong);
-//        }
-//        for (Playlist playlist: playlists){
-//            Likeplaylist likeplaylist = new Likeplaylist();
-//            likeplaylist.setUser(users);
-//            likeplaylist.setPlaylist(playlist);
-//            likeplaylist.setStatus(false);
-//            likeplaylistService.saveLikeplaylist(likeplaylist);
-//        }
-        return ResponseEntity.ok(new MessageResponse("Đăng ký tài khoản thành công!"));
+
+        return new  ResponseEntity<>(new MessageResponse("Đăng ký tài khoản thành công!"), HttpStatus.OK);
     }
 }
