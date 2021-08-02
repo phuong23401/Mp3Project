@@ -5,20 +5,21 @@ import com.karaoke.mp3project.model.User;
 public class JwtResponse {
     private String token;
     private Long id;
-    private User user;
+    private String name;
 
-    public JwtResponse(String token, Long id, User user) {
+    public JwtResponse(String token, Long id, String name) {
         this.token = token;
         this.id = id;
-        this.user = user;
+        this.name = name;
     }
 
-    public User getUser() {
-        return user;
+
+    public String getName() {
+        return name;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getToken() {

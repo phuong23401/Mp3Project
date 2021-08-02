@@ -57,15 +57,15 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
-        System.out.println(jwt);
+        System.out.println("jwt ====> "+jwt);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+//        List<String> roles = userDetails.getAuthorities().stream()
+//                .map(GrantedAuthority::getAuthority)
+//                .collect(Collectors.toList());
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
-                userDetails.getUser()
+                userDetails.getName()
         ));
     }
 
@@ -111,22 +111,6 @@ public class AuthController {
         }
         users.setRole(roles);
         userRepo.save(users);
-//        ArrayList<Song> songs = songService.findAll();
-//        ArrayList<Playlist> playlists = playlistService.findAll();
-//        for (Song song : songs){
-//            Likesong likesong = new Likesong();
-//            likesong.setUser(users);
-//            likesong.setSong(song);
-//            likesong.setStatus(false);
-//            likesongService.saveLikesong(likesong);
-//        }
-//        for (Playlist playlist: playlists){
-//            Likeplaylist likeplaylist = new Likeplaylist();
-//            likeplaylist.setUser(users);
-//            likeplaylist.setPlaylist(playlist);
-//            likeplaylist.setStatus(false);
-//            likeplaylistService.saveLikeplaylist(likeplaylist);
-//        }
         return ResponseEntity.ok(new MessageResponse("Đăng ký tài khoản thành công!"));
     }
 }
