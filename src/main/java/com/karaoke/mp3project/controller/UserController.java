@@ -57,9 +57,9 @@ public class UserController {
 
     @PutMapping("/changepassword")
     public ResponseEntity<MessageResponse> changPassword(@RequestBody Password password){
-//        User userCurrent = userDtService.getCurrentUser();
-        Long id = Long.parseLong(password.getId());
-        User userCurrent = userService.findOne(id);
+        User userCurrent = userDtService.getCurrentUser();
+//        Long id = Long.parseLong(password.getId());
+//        User userCurrent = userService.findOne(id);
         String message;
         if(userService.checkPassword(userCurrent, password.getPassword())){
             userCurrent.setPassword(passwordEncoder.encode(password.getNewPassword()));
