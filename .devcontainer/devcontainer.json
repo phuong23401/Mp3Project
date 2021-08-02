@@ -16,6 +16,10 @@
 	"settings": {
 		"java.home": "/docker-java-home",
 		"java.import.gradle.java.home": "/usr/local/sdkman/candidates/java/current",
+		"maven.executable.path": "/usr/local/sdkman/candidates/maven/current/bin/mvn",
+		//Without this setting for lombok, the IDE can't generate the lombok getter/setter on the fly
+		//Also, remove this setting will cause a crash in the java language server (if there is a lombok extension installed on the host machine)
+		"java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx1G -Xms100m -javaagent:/home/vscode/.vscode-server/extensions/gabrielbb.vscode-lombok-1.0.1/server/lombok.jar",
 		"java.configuration.runtimes": [{
 			"default": true,
 			"name": "JavaSE-1.8",
@@ -27,15 +31,12 @@
 	"extensions": [
 		//Java essential
 		"vscjava.vscode-java-pack",
-		"richardwillis.vscode-gradle-extension-pack",
-
 		//Spell checker and code smell detector
 		"streetsidesoftware.code-spell-checker",
 		"sonarsource.sonarlint-vscode",
 
-		//Dependencies Introspect
-		"dgileadi.java-decompiler",
-		"bazelbuild.vscode-bazel"
+		//Lombok
+		"gabrielbb.vscode-lombok"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
