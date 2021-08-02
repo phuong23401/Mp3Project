@@ -69,4 +69,13 @@ public class SingerController {
         return new ResponseEntity<>(singersList, HttpStatus.OK);
     }
 
+    @GetMapping("/singer/{name}")
+    public ResponseEntity<?> deleteSinger(@PathVariable String name) {
+        List<Singer> singer = (List<Singer>) singerService.findByName(name);
+        if (singer.size()==0) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(singer, HttpStatus.OK);
+    }
+
 }
