@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,7 +57,9 @@ public class UserController {
 
     @PutMapping("/changepassword")
     public ResponseEntity<MessageResponse> changPassword(@RequestBody Password password){
-        User userCurrent = userDtService.getCurrentUser();
+//        User userCurrent = userDtService.getCurrentUser();
+        Long id = Long.parseLong(password.getId());
+        User userCurrent = userService.findOne(id);
         String message;
         if(userService.checkPassword(userCurrent, password.getPassword())){
             userCurrent.setPassword(passwordEncoder.encode(password.getNewPassword()));
