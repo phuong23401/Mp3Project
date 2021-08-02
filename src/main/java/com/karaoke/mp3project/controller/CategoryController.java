@@ -9,9 +9,12 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
+import java.util.Optional;
+
 @RequestMapping("/category")
 @Repository
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -27,5 +30,15 @@ public class CategoryController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(categories, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getCategoryById(@PathVariable Long id) {
+        Optional<Category> categories = cateServiceImp.getCategoryById(id);
+        if (!categories.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<>(categories.get(),HttpStatus.OK);
+        }
     }
  }
