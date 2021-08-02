@@ -109,7 +109,6 @@ public class AuthController {
         }
         users.setRole(roles);
         userRepo.save(users);
-
         return new  ResponseEntity<>(new MessageResponse("Đăng ký tài khoản thành công!"), HttpStatus.OK);
     }
 }
