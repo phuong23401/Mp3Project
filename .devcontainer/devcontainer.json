@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.187.0/containers/java-8
 {
-	"name": "Java 8",
+	"name": "Codegym Java 8 Development Container",
 	"build": {
 		"dockerfile": "Dockerfile",
 		"args": {
@@ -25,11 +25,9 @@
 	
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		//Java and Spring Boot essential
+		//Java essential
 		"vscjava.vscode-java-pack",
-		"adashen.vscode-tomcat",
 		"richardwillis.vscode-gradle-extension-pack",
-		"vscjava.vscode-spring-initializr",
 
 		//Spell checker and code smell detector
 		"streetsidesoftware.code-spell-checker",
