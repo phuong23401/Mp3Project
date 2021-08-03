@@ -24,4 +24,5 @@ public interface SongRepo extends JpaRepository<Song, Long> {
     @Query(value = "select * from song order by number_of_view desc limit 4", nativeQuery = true)
     List<Song> findAllByNumberOfViewOrderByNumberOfView();
 
+
 }

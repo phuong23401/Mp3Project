@@ -23,11 +23,10 @@ public interface ISongService {
 
     Optional<Song> findOne(Long id);
     Song findOneName(Long id);
-
-
     void deleteSong(Long id);
-
     void saveSong(Song song);
     List<Song> findAllByNameSong(String nameSong);
     List<Song> findAllByCreationTimeOrderByCreationTime();
+
+
 }
