@@ -41,7 +41,7 @@ public class Song {
     @ManyToOne
     private Category categories;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JoinTable(name = "singer_song",
@@ -50,7 +50,7 @@ public class Song {
     @JsonIgnoreProperties("songs")
     private List<Singer> singer;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @JoinTable(name = "playlist_song",

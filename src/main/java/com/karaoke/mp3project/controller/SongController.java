@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.util.List;
@@ -31,8 +32,10 @@ public class SongController {
         }
         Timestamp createdTime = new Timestamp(System.currentTimeMillis());
         Timestamp upDateTime = new Timestamp(System.currentTimeMillis());
+        Long viewnumber = Long.valueOf(0);
         song.setCreatedTime(createdTime);
         song.setUpdatedTime(upDateTime);
+        song.setNumberOfView(viewnumber);
         songService.saveSong(song);
         return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
     }
@@ -96,11 +99,39 @@ public class SongController {
         Song song = songService.findOneName(id);
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
+    @GetMapping("/songs/{id}")
+    public ResponseEntity<?> getsongById(@PathVariable Long id){
+        Optional<Song> song = songService.findOne(id);
+        if(!song.isPresent()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(song, HttpStatus.OK);
+    }
 
     @GetMapping(value = "/top2mostlistened", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Song>> top10SongsNew() {
         List<Song> songList = songService.findAllByCreationTimeOrderByCreationTime();
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
+//    @GetMapping("/toplisten")
+//    public ResponseEntity<?> topListen() {
+//        List<Song> songs = songService.findAllByOrderByListenSong();
+//        return new ResponseEntity<>(songs,HttpStatus.OK);
+//    }
+    @GetMapping("/count-listen-song/{id}")
+    public ResponseEntity<?> getSongListenById(@PathVariable("id") Long id){
+        try {
+            Song song = songService.findOne(id).orElseThrow(EntityNotFoundException::new);
+            song.setNumberOfView(song.getNumberOfView()+1);
+            songService.saveSong(song);
+            return new ResponseEntity<>(song,HttpStatus.OK);
+        } catch (EntityNotFoundException e){
+            return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatus.NOT_FOUND);
+        }
+    }
+
+
+
+
 
 }
