@@ -25,11 +25,8 @@ public class SingerController {
 
     @PostMapping("/create")
     public ResponseEntity<?> createSinger(@Valid @RequestBody Singer singer) {
-        if (singer.getAvatarUrl() == null || singer.getAvatarUrl().trim().isEmpty()) {
-            return new ResponseEntity<>(new MessageResponse("noavatar"), HttpStatus.OK);
-        }
         singerService.saveSinger(singer);
-        return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
+        return new ResponseEntity<>(singer, HttpStatus.OK);
     }
 
 
@@ -69,11 +66,11 @@ public class SingerController {
         return new ResponseEntity<>(singersList, HttpStatus.OK);
     }
 
-    @GetMapping("/singer/{name}")
-    public ResponseEntity<?> deleteSinger(@PathVariable String name) {
-        List<Singer> singer = (List<Singer>) singerService.findByName(name);
-        if (singer.size()==0) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    @PostMapping("/test")
+    public ResponseEntity<?> findSingerByName(@Valid @RequestBody String name) {
+        Singer singer =  singerService.findByName(name);
+        if (singer==null) {
+            return new ResponseEntity<>(new MessageResponse("noObj"),HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(singer, HttpStatus.OK);
     }

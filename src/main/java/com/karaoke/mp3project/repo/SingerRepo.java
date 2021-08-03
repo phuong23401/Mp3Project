@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SingerRepo extends JpaRepository<Singer, Long> {
-    Iterable<Singer> findAllByNameContaining(String name);
+    Singer findAllByName(String name);
 
 }

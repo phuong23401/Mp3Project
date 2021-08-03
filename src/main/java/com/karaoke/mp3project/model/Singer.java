@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -18,24 +19,24 @@ public class Singer {
     private String description;
     private String avatarUrl;
 
-    @ManyToMany
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JoinTable(name = "singer_song",
-            joinColumns = {@JoinColumn(name = "singer_id")},
-            inverseJoinColumns = {@JoinColumn(name = "song_id")})
-    @JsonIgnoreProperties("singers")
-    private Set<Song> songs;
+//    @ManyToMany(mappedBy = "singer")
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+////    @JoinTable(name = "singer_song",
+////            joinColumns = {@JoinColumn(name = "singer_id")},
+////            inverseJoinColumns = {@JoinColumn(name = "song_id")})
+//    @JsonIgnoreProperties("singers")
+//    private Collection<Song> songs;
 
     public Singer() {
     }
 
-    public Singer(Long id, String name, String description, String avatarUrl, Set<Song> songs) {
+    public Singer(Long id, String name, String description, String avatarUrl) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.avatarUrl = avatarUrl;
-        this.songs = songs;
+//        this.songs = songs;
     }
 
     public Long getId() {
@@ -70,11 +71,11 @@ public class Singer {
         this.avatarUrl = avatarUrl;
     }
 
-    public Set<Song> getSongs() {
-        return songs;
-    }
-
-    public void setSongs(Set<Song> songs) {
-        this.songs = songs;
-    }
+//    public Collection<Song> getSongs() {
+//        return songs;
+//    }
+//
+//    public void setSongs(Collection<Song> songs) {
+//        this.songs = songs;
+//    }
 }

@@ -22,8 +22,8 @@ public class SingerService implements ISingerService {
     }
 
     @Override
-    public Iterable<Singer> findByName(String name) {
-        return singerRepo.findAllByNameContaining(name);
+    public Singer findByName(String name) {
+        return singerRepo.findAllByName(name);
     }
 
     @Override
@@ -32,8 +32,8 @@ public class SingerService implements ISingerService {
     }
 
     @Override
-    public void saveSinger(Singer singer) {
-        singerRepo.save(singer);
+    public Singer saveSinger(Singer singer) {
+       return singerRepo.save(singer);
     }
 
     @Override

@@ -32,19 +32,19 @@ public class PlayList {
     @JoinColumn(name = "user")
     private User user;
 
-    @ManyToMany
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
-    @JoinTable(name = "playlist_song",
-            joinColumns = {@JoinColumn(name = "playlist_id")},
-            inverseJoinColumns = {@JoinColumn(name = "song_id")})
-    @JsonIgnoreProperties("playlists")
-    private Set<Song> songs;
+//    @ManyToMany
+//    @EqualsAndHashCode.Exclude
+//    @ToString.Exclude
+//    @JoinTable(name = "playlist_song",
+//            joinColumns = {@JoinColumn(name = "playlist_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "song_id")})
+//    @JsonIgnoreProperties("playlists")
+//    private Set<Song> songs;
 
     public PlayList() {
     }
 
-    public PlayList(Long id, String name, String avatarUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, Long listen, User user, Set<Song> songs) {
+    public PlayList(Long id, String name, String avatarUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, Long listen, User user) {
         this.id = id;
         this.name = name;
         this.avatarUrl = avatarUrl;
@@ -53,7 +53,6 @@ public class PlayList {
         this.countLike = countLike;
         this.listen = listen;
         this.user = user;
-        this.songs = songs;
     }
 
     public Long getId() {
@@ -120,11 +119,4 @@ public class PlayList {
         this.user = user;
     }
 
-    public Set<Song> getSongs() {
-        return songs;
-    }
-
-    public void setSongs(Set<Song> songs) {
-        this.songs = songs;
-    }
 }
