@@ -3,6 +3,7 @@ package com.karaoke.mp3project.controller;
 import com.karaoke.mp3project.dto.respon.MessageResponse;
 import com.karaoke.mp3project.model.Password;
 import com.karaoke.mp3project.model.User;
+import com.karaoke.mp3project.model.UserCurrentUpdate;
 import com.karaoke.mp3project.security.userprincipal.UserDtService;
 import com.karaoke.mp3project.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,20 +33,16 @@ public class UserController {
     }
 
     @PutMapping("/changeinfor")
-    public ResponseEntity<MessageResponse> changeInforMations( @RequestBody User user){
-//        User userOld =  userService.findOne(id);
-//        User userCurrent =  userService.findByUsername(
-//                SecurityContextHolder.getContext().getAuthentication().getName()
-//        );
+    public ResponseEntity<MessageResponse> changeInforMations(@RequestBody UserCurrentUpdate userCurrentUpdate){
         User userCurrent = userDtService.getCurrentUser();
         System.out.println("user hien tai");
         System.out.println(userCurrent.toString());
         String message;
         if(userCurrent != null){
-            userCurrent.setAvatarUrl(user.getAvatarUrl());
-            userCurrent.setGender(user.getGender());
-            userCurrent.setHobbies(user.getHobbies());
-            userCurrent.setName(user.getName());
+            userCurrent.setAvatarUrl(userCurrentUpdate.getAvatarUrl());
+            userCurrent.setGender(userCurrentUpdate.getGender());
+            userCurrent.setHobbies(userCurrentUpdate.getHobbies());
+            userCurrent.setName(userCurrentUpdate.getName());
             userService.updateUser(userCurrent);
             message = "Cập nhât thông tin thành công!";
             return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
@@ -58,8 +55,6 @@ public class UserController {
     @PutMapping("/changepassword")
     public ResponseEntity<MessageResponse> changPassword(@RequestBody Password password){
         User userCurrent = userDtService.getCurrentUser();
-//        Long id = Long.parseLong(password.getId());
-//        User userCurrent = userService.findOne(id);
         String message;
         if(userService.checkPassword(userCurrent, password.getPassword())){
             userCurrent.setPassword(passwordEncoder.encode(password.getNewPassword()));
@@ -71,13 +66,17 @@ public class UserController {
         return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
     }
 
-    @PostMapping("/getuser")
-    public ResponseEntity<User> getUserByToken() {
-//        User userCurrent = userDtService.getCurrentUser();
-        User userCurrent =  userService.findByUsername(
-                SecurityContextHolder.getContext().getAuthentication().getName()
-        );
+    @GetMapping("/getuser")
+    public ResponseEntity<UserCurrentUpdate> getUserByToken() {
+        User userCurrent = userDtService.getCurrentUser();
+        UserCurrentUpdate userCurrentUpdate = new UserCurrentUpdate();
+
+        userCurrentUpdate.setName(userCurrent.getName());
+        userCurrentUpdate.setGender(userCurrent.getGender());
+        userCurrentUpdate.setHobbies(userCurrent.getHobbies());
+        userCurrentUpdate.setAvatarUrl(userCurrent.getAvatarUrl());
+
         System.out.println(userCurrent);
-        return new ResponseEntity<>(userCurrent, HttpStatus.OK);
+        return new ResponseEntity<>(userCurrentUpdate, HttpStatus.OK);
     }
 }
