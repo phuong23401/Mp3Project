@@ -17,7 +17,7 @@ public class JwtResponse {
         return username;
     }
 
-    public void setUser(String username) {
+    public void setUser (String username) {
         this.username = username;
     }
 
