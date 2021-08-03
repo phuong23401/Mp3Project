@@ -57,16 +57,14 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
-        System.out.println(jwt);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        System.out.println(userDetails.getName());
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
-                userDetails.getName()
+                userDetails.getUsername()
         ));
     }
 
