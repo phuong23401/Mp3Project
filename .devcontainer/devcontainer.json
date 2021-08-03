@@ -29,8 +29,14 @@
 	
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
+		//Git Plugin
+		"eamodio.gitlens",
+		"donjayamanne.githistory",
+		"mhutchie.git-graph",
+		
 		//Java essential
 		"vscjava.vscode-java-pack",
+
 		//Spell checker and code smell detector
 		"streetsidesoftware.code-spell-checker",
 		"sonarsource.sonarlint-vscode",
