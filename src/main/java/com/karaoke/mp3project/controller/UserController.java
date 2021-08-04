@@ -44,10 +44,10 @@ public class UserController {
             userCurrent.setHobbies(userCurrentUpdate.getHobbies());
             userCurrent.setName(userCurrentUpdate.getName());
             userService.updateUser(userCurrent);
-            message = "Cập nhât thông tin thành công!";
+            message = "UPDATE PROFILE SUCCESSFULLY";
             return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
         }else {
-             message = "Cập nhật thất bại, kiểm tra lại!";
+             message = "UPDATE PROFILE FAILED";
             return new ResponseEntity<>(new MessageResponse(message), HttpStatus.FAILED_DEPENDENCY);
         }
     }
@@ -59,10 +59,10 @@ public class UserController {
         if(userService.checkPassword(userCurrent, password.getPassword())){
             userCurrent.setPassword(passwordEncoder.encode(password.getNewPassword()));
             userService.updateUser(userCurrent);
-            message = "Đã đổi mật khẩu thành công!";
+            message = "CHANGE PASSWORD SUCCESSFULLY";
             return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
         }else {
-            message = "Đổi mật khẩu thất bại!";
+            message = "CHANGE PASSWORD FAILED";
         }
         return ResponseEntity
                 .badRequest()
