@@ -36,7 +36,7 @@ public class Song {
     private String lyric;
     private Long numberOfView;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.ALL})
     private User user;
     @ManyToOne
     private Category categories;
