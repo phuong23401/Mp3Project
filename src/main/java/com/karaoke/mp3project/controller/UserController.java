@@ -60,10 +60,13 @@ public class UserController {
             userCurrent.setPassword(passwordEncoder.encode(password.getNewPassword()));
             userService.updateUser(userCurrent);
             message = "Đã đổi mật khẩu thành công!";
+            return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
         }else {
             message = "Đổi mật khẩu thất bại!";
         }
-        return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
+        return ResponseEntity
+                .badRequest()
+                .body(new MessageResponse(message));
     }
 
     @GetMapping("/getuser")
