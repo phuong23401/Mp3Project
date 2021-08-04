@@ -106,6 +106,6 @@ public class AuthController {
         }
         users.setRole(roles);
         userRepo.save(users);
-        return new  ResponseEntity<>(new MessageResponse("Register successfully !"), HttpStatus.OK);
+        return new  ResponseEntity<>(new MessageResponse("REGISTER SUCCESSFULLY"), HttpStatus.OK);
     }
 }
