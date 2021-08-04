@@ -44,11 +44,13 @@ public class UserController {
             userCurrent.setHobbies(userCurrentUpdate.getHobbies());
             userCurrent.setName(userCurrentUpdate.getName());
             userService.updateUser(userCurrent);
-            message = "UPDATE PROFILE SUCCESSFULLY";
+            message = "UPDATE PROFILE SUCCESSFULLY !";
             return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
         }else {
-             message = "UPDATE PROFILE FAILED";
-            return new ResponseEntity<>(new MessageResponse(message), HttpStatus.FAILED_DEPENDENCY);
+            message = "UPDATE PROFILE FAILED";
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse(message));
         }
     }
 
@@ -59,14 +61,15 @@ public class UserController {
         if(userService.checkPassword(userCurrent, password.getPassword())){
             userCurrent.setPassword(passwordEncoder.encode(password.getNewPassword()));
             userService.updateUser(userCurrent);
-            message = "CHANGE PASSWORD SUCCESSFULLY";
+            message = "CHANGE PASSWORD SUCCESSFULLY !";
             return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
         }else {
             message = "CHANGE PASSWORD FAILED";
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse(message));
         }
-        return ResponseEntity
-                .badRequest()
-                .body(new MessageResponse(message));
+
     }
 
     @GetMapping("/getuser")
