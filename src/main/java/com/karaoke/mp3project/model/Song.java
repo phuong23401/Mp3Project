@@ -58,6 +58,9 @@ public class Song {
             inverseJoinColumns = {@JoinColumn(name = "playlist_id")})
     @JsonIgnoreProperties("songs")
     private List<PlayList> playlist;
+    private String author;
+
+
 
     public Song() {
     }
@@ -78,6 +81,26 @@ public class Song {
         this.categories = categories;
         this.singer = singer;
         this.playlist = playlist;
+
+    }
+
+    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, String lyric, Long numberOfView, User user, Category categories, List<Singer> singer, List<PlayList> playlist, String author) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.tags = tags;
+        this.avatarUrl = avatarUrl;
+        this.fileUrl = fileUrl;
+        this.createdTime = createdTime;
+        this.updatedTime = updatedTime;
+        this.countLike = countLike;
+        this.lyric = lyric;
+        this.numberOfView = numberOfView;
+        this.user = user;
+        this.categories = categories;
+        this.singer = singer;
+        this.playlist = playlist;
+        this.author = author;
     }
 
     public Song(@NotNull(message = "Vui lòng nhập tên bài hát!") @Size(max = 100, message = "Vui lòng nhập đúng tên bài hát!") String name, String description, @Size(max = 50, message = "Vui lòng không spam!") String tags, String avatarUrl, String fileUrl, Timestamp createdTime, String lyric, User user, Category categories, List<Singer> singer) {
@@ -123,6 +146,14 @@ public class Song {
         this.categories = categories;
         this.singer = singer;
         this.playlist = playlist;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public Long getNumberOfView() {
