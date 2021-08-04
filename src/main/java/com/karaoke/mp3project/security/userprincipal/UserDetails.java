@@ -132,7 +132,22 @@ public class UserDetails implements org.springframework.security.core.userdetail
         );
     }
 
-//    @Override
+    @Override
+    public String toString() {
+        return "UserDetails{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
+                ", gender='" + gender + '\'' +
+                ", name='" + name + '\'' +
+                ", hobbies='" + hobbies + '\'' +
+                ", password='" + password + '\'' +
+                ", user=" + user +
+                ", authorities=" + authorities +
+                '}';
+    }
+    //    @Override
 //    public boolean equals(Object o) {
 //        if (this == o)
 //            return true;

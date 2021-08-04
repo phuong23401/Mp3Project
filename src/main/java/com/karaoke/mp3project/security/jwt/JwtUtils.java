@@ -16,13 +16,15 @@ public class JwtUtils {
 
     @Value("${bezkoder.app.jwtSecret}")
     private String jwtSecret;
-
+//
     @Value("${bezkoder.app.jwtExpirationMs}")
     private int jwtExpirationMs;
+//    private String jwtSecret = "chinh.nguyen@codegym.vn";
+//    private int jwtExprationMs = 86400;
 
     public String generateJwtToken(Authentication authentication){
         UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
-
+        System.out.println("usẻPrincipal == "+userPrincipal);
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
@@ -32,7 +34,10 @@ public class JwtUtils {
     }
 
     public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+
+         String userName = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+        System.out.println("userName ="+userName);
+        return userName;
     }
 
     public boolean validateJwtToken(String authToken) {
@@ -47,6 +52,8 @@ public class JwtUtils {
             logger.error("JWT token is unsupported: {}", e.getMessage());
         } catch (IllegalArgumentException e){
             logger.error("JWT claims string is empty: {}", e.getMessage());
+        } catch (ExpiredJwtException e){
+            logger.error("JWT expred: {} ",e.getMessage());
         }
 
         return false;

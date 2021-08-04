@@ -15,17 +15,18 @@ import java.util.Set;
         @Email
         private String email;
         private String name;
-        private String gender;
-        private String avatarUrl;
-        private String hobbies;
-
         private Set<String> roles;
 
         @NotBlank
         @Size(min = 6, max = 40)
         private String password;
 
-
+        public SignupRequest(String username, String email, String name, String password) {
+            this.username = username;
+            this.email = email;
+            this.name = name;
+            this.password = password;
+        }
 
         public String getUsername() {
             return username;
@@ -59,35 +60,11 @@ import java.util.Set;
             this.password = password;
         }
 
-        public String getAvatarUrl() {
-            return avatarUrl;
-        }
-
-        public void setAvatarUrl(String avatarUrl) {
-            this.avatarUrl = avatarUrl;
-        }
-
-        public String getGender() {
-            return gender;
-        }
-
-        public void setGender(String gender) {
-            this.gender = gender;
-        }
-
         public String getName() {
             return name;
         }
 
         public void setName(String name) {
             this.name = name;
-        }
-
-        public String getHobbies() {
-            return hobbies;
-        }
-
-        public void setHobbies(String hobbies) {
-            this.hobbies = hobbies;
         }
     }

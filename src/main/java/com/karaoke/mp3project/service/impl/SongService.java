@@ -4,6 +4,7 @@ import com.karaoke.mp3project.model.Singer;
 import com.karaoke.mp3project.model.Song;
 import com.karaoke.mp3project.model.User;
 import com.karaoke.mp3project.repo.SongRepo;
+import com.karaoke.mp3project.security.userprincipal.UserDtService;
 import com.karaoke.mp3project.service.ISongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,9 @@ public class SongService implements ISongService {
 
     @Autowired
     private SongRepo songRepo;
+
+    @Autowired
+    UserDtService userDtService;
 
     @Override
     public ArrayList<Song> findAll() {
@@ -60,6 +64,8 @@ public class SongService implements ISongService {
 
     @Override
     public void saveSong(Song song) {
+        User user = userDtService.getCurrentUser();
+        song.setUser(user);
         songRepo.save(song);
     }
 

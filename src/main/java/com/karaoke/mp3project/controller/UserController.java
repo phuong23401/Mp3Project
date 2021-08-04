@@ -3,13 +3,13 @@ package com.karaoke.mp3project.controller;
 import com.karaoke.mp3project.dto.respon.MessageResponse;
 import com.karaoke.mp3project.model.Password;
 import com.karaoke.mp3project.model.User;
+import com.karaoke.mp3project.model.UserCurrentUpdate;
 import com.karaoke.mp3project.security.userprincipal.UserDtService;
 import com.karaoke.mp3project.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -33,20 +33,16 @@ public class UserController {
     }
 
     @PutMapping("/changeinfor")
-    public ResponseEntity<MessageResponse> changeInforMations( @RequestBody User user){
-//        User userOld =  userService.findOne(id);
-//        User userCurrent =  userService.findByUsername(
-//                SecurityContextHolder.getContext().getAuthentication().getName()
-//        );
+    public ResponseEntity<MessageResponse> changeInforMations(@RequestBody UserCurrentUpdate userCurrentUpdate){
         User userCurrent = userDtService.getCurrentUser();
         System.out.println("user hien tai");
         System.out.println(userCurrent.toString());
         String message;
         if(userCurrent != null){
-            userCurrent.setAvatarUrl(user.getAvatarUrl());
-            userCurrent.setGender(user.getGender());
-            userCurrent.setHobbies(user.getHobbies());
-            userCurrent.setName(user.getName());
+            userCurrent.setAvatarUrl(userCurrentUpdate.getAvatarUrl());
+            userCurrent.setGender(userCurrentUpdate.getGender());
+            userCurrent.setHobbies(userCurrentUpdate.getHobbies());
+            userCurrent.setName(userCurrentUpdate.getName());
             userService.updateUser(userCurrent);
             message = "Cập nhât thông tin thành công!";
             return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
@@ -70,4 +66,17 @@ public class UserController {
         return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
     }
 
+    @GetMapping("/getuser")
+    public ResponseEntity<UserCurrentUpdate> getUserByToken() {
+        User userCurrent = userDtService.getCurrentUser();
+        UserCurrentUpdate userCurrentUpdate = new UserCurrentUpdate();
+
+        userCurrentUpdate.setName(userCurrent.getName());
+        userCurrentUpdate.setGender(userCurrent.getGender());
+        userCurrentUpdate.setHobbies(userCurrent.getHobbies());
+        userCurrentUpdate.setAvatarUrl(userCurrent.getAvatarUrl());
+
+        System.out.println(userCurrent);
+        return new ResponseEntity<>(userCurrentUpdate, HttpStatus.OK);
+    }
 }

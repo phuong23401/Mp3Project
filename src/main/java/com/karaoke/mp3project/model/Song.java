@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -47,7 +48,7 @@ public class Song {
             joinColumns = {@JoinColumn(name = "song_id")},
             inverseJoinColumns = {@JoinColumn(name = "singer_id")})
     @JsonIgnoreProperties("songs")
-    private Set<Singer> singer;
+    private List<Singer> singer;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude
@@ -56,13 +57,15 @@ public class Song {
             joinColumns = {@JoinColumn(name = "song_id")},
             inverseJoinColumns = {@JoinColumn(name = "playlist_id")})
     @JsonIgnoreProperties("songs")
-    private Set<PlayList> playlist;
+    private List<PlayList> playlist;
     private String author;
+
+
 
     public Song() {
     }
 
-    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, String lyric, Long numberOfView, User user, Category categories, Set<Singer> singer, Set<PlayList> playlist) {
+    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, String lyric, Long numberOfView, User user, Category categories, List<Singer> singer, List<PlayList> playlist) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -78,9 +81,29 @@ public class Song {
         this.categories = categories;
         this.singer = singer;
         this.playlist = playlist;
+
     }
 
-    public Song(@NotNull(message = "Vui lòng nhập tên bài hát!") @Size(max = 100, message = "Vui lòng nhập đúng tên bài hát!") String name, String description, @Size(max = 50, message = "Vui lòng không spam!") String tags, String avatarUrl, String fileUrl, Timestamp createdTime, String lyric, User user, Category categories, Set<Singer> singer) {
+    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, String lyric, Long numberOfView, User user, Category categories, List<Singer> singer, List<PlayList> playlist, String author) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.tags = tags;
+        this.avatarUrl = avatarUrl;
+        this.fileUrl = fileUrl;
+        this.createdTime = createdTime;
+        this.updatedTime = updatedTime;
+        this.countLike = countLike;
+        this.lyric = lyric;
+        this.numberOfView = numberOfView;
+        this.user = user;
+        this.categories = categories;
+        this.singer = singer;
+        this.playlist = playlist;
+        this.author = author;
+    }
+
+    public Song(@NotNull(message = "Vui lòng nhập tên bài hát!") @Size(max = 100, message = "Vui lòng nhập đúng tên bài hát!") String name, String description, @Size(max = 50, message = "Vui lòng không spam!") String tags, String avatarUrl, String fileUrl, Timestamp createdTime, String lyric, User user, Category categories, List<Singer> singer) {
         this.name = name;
         this.description = description;
         this.tags = tags;
@@ -93,7 +116,7 @@ public class Song {
         this.singer = singer;
     }
 
-    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, Category categories, Set<Singer> singer, Set<PlayList> playlist) {
+    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, Category categories, List<Singer> singer, List<PlayList> playlist) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -108,7 +131,7 @@ public class Song {
         this.playlist = playlist;
     }
 
-    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, String lyric, User user, Category categories, Set<Singer> singer, Set<PlayList> playlist) {
+    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, String lyric, User user, Category categories, List<Singer> singer, List<PlayList> playlist) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -123,6 +146,14 @@ public class Song {
         this.categories = categories;
         this.singer = singer;
         this.playlist = playlist;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public Long getNumberOfView() {
@@ -229,19 +260,19 @@ public class Song {
         this.categories = categories;
     }
 
-    public Set<Singer> getSinger() {
+    public List<Singer> getSinger() {
         return singer;
     }
 
-    public void setSinger(Set<Singer> singer) {
+    public void setSinger(List<Singer> singer) {
         this.singer = singer;
     }
 
-    public Set<PlayList> getPlaylist() {
+    public List<PlayList> getPlaylist() {
         return playlist;
     }
 
-    public void setPlaylist(Set<PlayList> playlist) {
+    public void setPlaylist(List<PlayList> playlist) {
         this.playlist = playlist;
     }
 }
