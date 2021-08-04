@@ -57,6 +57,7 @@ public class Song {
             inverseJoinColumns = {@JoinColumn(name = "playlist_id")})
     @JsonIgnoreProperties("songs")
     private Set<PlayList> playlist;
+    private String author;
 
     public Song() {
     }

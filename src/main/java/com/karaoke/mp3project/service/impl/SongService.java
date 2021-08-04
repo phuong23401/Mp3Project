@@ -72,4 +72,24 @@ public class SongService implements ISongService {
     public List<Song> findAllByCreationTimeOrderByCreationTime() {
         return songRepo.findAllByNumberOfViewOrderByNumberOfView();
     }
+
+    @Override
+    public Iterable<Song> findAllBySingerContainingAndUserContainingAndAuthorContainingAndNameContaining(String singer, User user, String author, String name) {
+        return songRepo.findAllBySingerContainingAndUserContainingAndAuthorContainingAndNameContaining(singer, user, author, name);
+    }
+
+    @Override
+    public Iterable<Song> findAllBySingerContaining(String singer) {
+        return songRepo.findAllBySingerContaining(singer);
+    }
+
+    @Override
+    public Iterable<Song> findAllByAuthorContaining(String author) {
+        return songRepo.findAllByAuthorContaining(author);
+    }
+
+    @Override
+    public Iterable<Song> findAllByUserContaining(String user) {
+        return songRepo.findAllByUserContaining(user);
+    }
 }
