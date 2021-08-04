@@ -30,6 +30,12 @@ public interface ISongService {
     void saveSong(Song song);
     List<Song> findAllByNameSong(String nameSong);
     List<Song> findAllByCreationTimeOrderByCreationTime();
+    Iterable<Song> findAllBySingerContainingAndUserContainingAndAuthorContainingAndNameContaining(String singer,User user,String author,String name);
+    Iterable<Song> findAllBySingerContaining(String singer);
+
+    Iterable<Song> findAllByAuthorContaining(String author);
+
+    Iterable<Song> findAllByUserContaining(String user);
 
 
 }

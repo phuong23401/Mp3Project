@@ -2,6 +2,7 @@ package com.karaoke.mp3project.controller;
 
 import com.karaoke.mp3project.dto.respon.MessageResponse;
 import com.karaoke.mp3project.model.Song;
+import com.karaoke.mp3project.model.User;
 import com.karaoke.mp3project.service.impl.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -143,8 +144,20 @@ public class SongController {
             return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/search-param")
+    //singer,String user,String author,String name
+    public  ResponseEntity<Iterable<Song>> searchParam(@RequestParam(name = "singer") String singer,
+                                                       @RequestParam(name = "user") User user,
+                                                       @RequestParam(name = "author") String author,
+                                                       @RequestParam(name = "name") String name){
+        Iterable<Song> songs = songService.findAllBySingerContainingAndUserContainingAndAuthorContainingAndNameContaining(singer, user, author, name);
+        if (songs == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(songs,HttpStatus.OK);
 
 
+    }
 
 
 
