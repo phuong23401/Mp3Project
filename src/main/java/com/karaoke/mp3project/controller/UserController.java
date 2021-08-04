@@ -48,10 +48,10 @@ public class UserController {
             return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
         }else {
             message = "UPDATE PROFILE FAILED";
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse(message));
         }
+        return ResponseEntity
+                .badRequest()
+                .body(new MessageResponse(message));
     }
 
     @PutMapping("/changepassword")
@@ -65,11 +65,10 @@ public class UserController {
             return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
         }else {
             message = "CHANGE PASSWORD FAILED";
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse(message));
         }
-
+        return ResponseEntity
+                .badRequest()
+                .body(new MessageResponse(message));
     }
 
     @GetMapping("/getuser")
