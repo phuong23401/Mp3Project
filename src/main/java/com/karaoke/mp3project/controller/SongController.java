@@ -63,12 +63,12 @@ public class SongController {
         if (!song.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else {
-            if (newSong.getAvatarUrl() == null || newSong.getAvatarUrl().trim().isEmpty()) {
-                return new ResponseEntity<>(new MessageResponse("noavatar"), HttpStatus.OK);
-            }
-            if (newSong.getFileUrl() == null || newSong.getFileUrl().trim().isEmpty()) {
-                return new ResponseEntity<>(new MessageResponse("nomp3url"), HttpStatus.OK);
-            }
+//            if (newSong.getAvatarUrl() == null || newSong.getAvatarUrl().trim().isEmpty()) {
+//                return new ResponseEntity<>(new MessageResponse("noavatar"), HttpStatus.OK);
+//            }
+//            if (newSong.getFileUrl() == null || newSong.getFileUrl().trim().isEmpty()) {
+//                return new ResponseEntity<>(new MessageResponse("nomp3url"), HttpStatus.OK);
+//            }
             Timestamp createdTime = new Timestamp(System.currentTimeMillis());
             Timestamp upDateTime = new Timestamp(System.currentTimeMillis());
             newSong.setCreatedTime(createdTime);

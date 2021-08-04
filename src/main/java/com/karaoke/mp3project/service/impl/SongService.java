@@ -71,8 +71,8 @@ public class SongService implements ISongService {
 
     @Override
     public void saveSong(Song song) {
-        User user = userDtService.getCurrentUser();
-        song.setUser(user);
+//        User user = userDtService.getCurrentUser();
+//        song.setUser(user);
         songRepo.save(song);
     }
 
