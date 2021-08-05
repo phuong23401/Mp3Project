@@ -3,9 +3,12 @@ package com.karaoke.mp3project.service;
 
 
 import com.karaoke.mp3project.model.PlayList;
+import com.karaoke.mp3project.model.Song;
 import com.karaoke.mp3project.model.User;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public interface IPlayListService {
     ArrayList<PlayList> findAll();
@@ -14,9 +17,17 @@ public interface IPlayListService {
 
     Iterable<PlayList> findByName(String name);
 
-    PlayList findOne(Long id);
+    Optional findOne(Long id);
 
     void deletePlaylist(Long id);
 
     void savePlaylist(PlayList playlist);
+
+    List<PlayList> findAllByNamePlayList(String namePlayList);
+
+    List<PlayList> findAllByOrderByCreationTime();
+
+    List<PlayList> findAllOrderByNumberOfListen();
+
+    List<PlayList> findAllOrderByNumberOfLike();
 }
