@@ -39,10 +39,6 @@ public class SongController {
     @Autowired
     private LikeSongService likeSongService;
 
-
-    @Autowired
-    private UserDtService userDtService;
-
     @PostMapping("/create")
     public ResponseEntity<?> createSong(@Valid @RequestBody Song song) {
         if (song.getAvatarUrl() == null || song.getAvatarUrl().trim().isEmpty()) {
