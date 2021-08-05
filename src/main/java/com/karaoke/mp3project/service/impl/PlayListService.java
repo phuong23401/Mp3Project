@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class PlayListService implements IPlayListService {
@@ -44,5 +45,10 @@ public class PlayListService implements IPlayListService {
     @Override
     public void savePlaylist(PlayList playlist) {
         playListRepo.save(playlist);
+    }
+
+    @Override
+    public Optional<PlayList> findById(Long id) {
+        return playListRepo.findById(id);
     }
 }

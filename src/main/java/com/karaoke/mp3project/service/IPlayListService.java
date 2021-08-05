@@ -6,6 +6,7 @@ import com.karaoke.mp3project.model.PlayList;
 import com.karaoke.mp3project.model.User;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public interface IPlayListService {
     ArrayList<PlayList> findAll();
@@ -19,4 +20,5 @@ public interface IPlayListService {
     void deletePlaylist(Long id);
 
     void savePlaylist(PlayList playlist);
+    Optional<PlayList> findById(Long id);
 }

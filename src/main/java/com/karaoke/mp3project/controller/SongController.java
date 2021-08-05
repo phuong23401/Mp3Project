@@ -1,8 +1,11 @@
 package com.karaoke.mp3project.controller;
 
 import com.karaoke.mp3project.dto.respon.MessageResponse;
+import com.karaoke.mp3project.model.LikeSong;
 import com.karaoke.mp3project.model.Song;
 import com.karaoke.mp3project.model.User;
+import com.karaoke.mp3project.security.userprincipal.UserDtService;
+import com.karaoke.mp3project.service.impl.LikeSongService;
 import com.karaoke.mp3project.service.impl.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,7 +28,12 @@ import java.util.Optional;
 @RestController
 public class SongController {
     @Autowired
+    private UserDtService userDtService;
+    @Autowired
     private SongService songService;
+    @Autowired
+    private LikeSongService likeSongService;
+
 
     @PostMapping("/create")
     public ResponseEntity<?> createSong(@Valid @RequestBody Song song) {
@@ -155,9 +163,37 @@ public class SongController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(songs,HttpStatus.OK);
-
-
     }
+    @GetMapping("/song-like-up/{id}")
+    public ResponseEntity<?> getSongLikedById(@PathVariable Long id) {
+        try {
+            Song song = songService.findOne(id).orElseThrow(EntityNotFoundException::new);
+            User user =  userDtService.getCurrentUser();
+            List<LikeSong> likeSongs = likeSongService.findByUserContaining(user.getUsername());
+            if (likeSongs.size() != 0){
+                for (int i = 0; i < likeSongs.size(); i++) {
+                    if (likeSongs.get(i).getSong().equals(song.getName())){
+                       likeSongService.deleteLikesong(likeSongs.get(i).getId());
+                       song.setCountLike(song.getCountLike() -1);
+                       songService.saveSong(song);
+                       return  new ResponseEntity<>(song,HttpStatus.OK);
+                    }
+                    
+                }
+            }
+            LikeSong likeSong = new LikeSong();
+            likeSong.setSong(song.getName());
+            likeSong.setUser(user.getUsername());
+            likeSongService.save(likeSong);
+            song.setCountLike(song.getCountLike() +1);
+            songService.saveSong(song);
+            return new ResponseEntity<>(song,HttpStatus.OK);
+        }catch (EntityNotFoundException e){
+            return new ResponseEntity<>(new MessageResponse(e.getMessage()),HttpStatus.NOT_FOUND);
+        }
+    }
+
+
 
 
 
