@@ -31,7 +31,12 @@ public class SongService implements ISongService {
 
     @Override
     public List<Song> findAll() {
-        return (List<Song>) songRepo.findAll();
+        return  songRepo.findAll();
+    }
+
+    @Override
+    public List<Song> findSongByUser(Long id) {
+        return songRepo.findSongByUser(id);
     }
 
     @Override

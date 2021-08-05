@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -38,7 +39,6 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
-
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -55,10 +55,11 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(jwtEntryPoint).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/home", "/api/auth/**").permitAll()
-//                .authorizeRequests().antMatchers("/**").permitAll()
-                .antMatchers("/song/**", "/profile/**").access("hasRole('USER')")
-                .antMatchers("/**").access("hasRole('ADMIN')")
+                .authorizeRequests()
+                .antMatchers("/api/auth/**", "/home/**").permitAll()
+//                .antMatchers( "/song/**", "/profile/**").access("hasRole('USER')")
+//                .antMatchers( "/song/**").hasAnyAuthority("ROLE_USER")
+                .antMatchers( "/**").hasAnyAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
