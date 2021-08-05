@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
-@RequestMapping("song")
+@RequestMapping("/api/songs")
 @RestController
 public class SongController {
     @Autowired
@@ -35,7 +35,7 @@ public class SongController {
     private LikeSongService likeSongService;
 
 
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<?> createSong(@Valid @RequestBody Song song) {
         if (song.getAvatarUrl() == null || song.getAvatarUrl().trim().isEmpty()) {
             return new ResponseEntity<>(new MessageResponse("noavatar"), HttpStatus.OK);
@@ -71,12 +71,6 @@ public class SongController {
         if (!song.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else {
-//            if (newSong.getAvatarUrl() == null || newSong.getAvatarUrl().trim().isEmpty()) {
-//                return new ResponseEntity<>(new MessageResponse("noavatar"), HttpStatus.OK);
-//            }
-//            if (newSong.getFileUrl() == null || newSong.getFileUrl().trim().isEmpty()) {
-//                return new ResponseEntity<>(new MessageResponse("nomp3url"), HttpStatus.OK);
-//            }
             Timestamp createdTime = new Timestamp(System.currentTimeMillis());
             Timestamp upDateTime = new Timestamp(System.currentTimeMillis());
             newSong.setCreatedTime(createdTime);
@@ -86,7 +80,7 @@ public class SongController {
             return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
         }
     }
-    @GetMapping("/page/song")
+    @GetMapping("/page")
     public ResponseEntity<?> pageSong(@PageableDefault(sort = "name", direction = Sort.Direction.ASC) Pageable pageable){
         Page<Song> songPage = songService.findAllSong(pageable);
         if(songPage.isEmpty()){
@@ -117,12 +111,7 @@ public class SongController {
         Iterable<Song> songs = songService.findByName(name);
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
-    @GetMapping("/song/{id}")
-    public ResponseEntity<Song> getSongById(@PathVariable("id") Long id){
-        Song song = songService.findOneName(id);
-        return new ResponseEntity<>(song, HttpStatus.OK);
-    }
-    @GetMapping("/songs/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getsongById(@PathVariable Long id){
         Optional<Song> song = songService.findOne(id);
         if(!song.isPresent()){
