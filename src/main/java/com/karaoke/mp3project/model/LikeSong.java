@@ -12,7 +12,6 @@ public class LikeSong {
 
     private String user;
 
-
     private String song;
 
     public LikeSong() {
@@ -22,6 +21,12 @@ public class LikeSong {
     public LikeSong(Long id, boolean status, String user, String song) {
         this.id = id;
         this.status = status;
+        this.user = user;
+        this.song = song;
+    }
+
+    public LikeSong(Long id, String user, String song) {
+        this.id = id;
         this.user = user;
         this.song = song;
     }

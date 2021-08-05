@@ -165,29 +165,6 @@ public class SongController {
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/top2mostlistened", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Song>> top10SongsNew() {
-        List<Song> songList = songService.findAllByCreationTimeOrderByCreationTime();
-        return new ResponseEntity<>(songList, HttpStatus.OK);
-    }
-
-    //    @GetMapping("/toplisten")
-//    public ResponseEntity<?> topListen() {
-//        List<Song> songs = songService.findAllByOrderByListenSong();
-//        return new ResponseEntity<>(songs,HttpStatus.OK);
-//    }
-    @GetMapping("/count-listen-song/{id}")
-    public ResponseEntity<?> getSongListenById(@PathVariable("id") Long id) {
-        try {
-            Song song = songService.findOne(id).orElseThrow(EntityNotFoundException::new);
-            song.setNumberOfView(song.getNumberOfView() + 1);
-            songService.saveSong(song);
-            return new ResponseEntity<>(song, HttpStatus.OK);
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatus.NOT_FOUND);
-        }
-    }
-
     @GetMapping("/search-param")
     //singer,String user,String author,String name
     public ResponseEntity<Iterable<Song>> searchParam(@RequestParam(name = "singer") String singer,
@@ -228,7 +205,5 @@ public class SongController {
             return new ResponseEntity<>(new MessageResponse(e.getMessage()),HttpStatus.NOT_FOUND);
         }
     }
-
-
 
 }
