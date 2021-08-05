@@ -11,17 +11,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
-@RequestMapping("song")
+@RequestMapping("/home")
 @RestController
 public class HomeController {
     @Autowired
     private SongService songService;
 
-    @GetMapping("/song/new")
+    @GetMapping("/new")
     public ResponseEntity<Iterable<Song>> getAllSongNew() {
-        ArrayList<Song> songs = songService.findAll();
+        List<Song> songs = songService.findAll();
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
 

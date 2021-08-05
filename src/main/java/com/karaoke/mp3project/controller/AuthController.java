@@ -54,7 +54,6 @@ public class AuthController {
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),loginRequest.getPassword()));
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -74,13 +73,13 @@ public class AuthController {
         if (userRepo.existsUsersByUsername(signupRequest.getUsername())){
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Tài khoản đã tồn tại!"));
+                    .body(new MessageResponse("Username is existed !"));
         }
 
         if(userRepo.existsUsersByEmail(signupRequest.getEmail())){
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Email đã được sử dụng!"));
+                    .body(new MessageResponse("Email is existed!"));
         }
 //        String name, String email, String username, String password, String gender, String hobbies, String avatarUrl) {
         User users = new User();
@@ -107,6 +106,6 @@ public class AuthController {
         }
         users.setRole(roles);
         userRepo.save(users);
-        return new  ResponseEntity<>(new MessageResponse("Đăng ký tài khoản thành công!"), HttpStatus.OK);
+        return new  ResponseEntity<>(new MessageResponse("REGISTER SUCCESSFULLY"), HttpStatus.OK);
     }
 }
