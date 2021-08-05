@@ -10,18 +10,16 @@ public class LikeSong {
 
     private boolean status = false;
 
-    @ManyToOne
-    @JoinColumn(name = "user")
-    private User user;
+    private String user;
 
-    @ManyToOne
-    @JoinColumn(name = "song")
-    private Song song;
+
+    private String song;
 
     public LikeSong() {
     }
 
-    public LikeSong(Long id, boolean status, User user, Song song) {
+
+    public LikeSong(Long id, boolean status, String user, String song) {
         this.id = id;
         this.status = status;
         this.user = user;
@@ -44,19 +42,19 @@ public class LikeSong {
         this.status = status;
     }
 
-    public User getUser() {
+    public String getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(String user) {
         this.user = user;
     }
 
-    public Song getSong() {
+    public String getSong() {
         return song;
     }
 
-    public void setSong(Song song) {
+    public void setSong(String song) {
         this.song = song;
     }
 }

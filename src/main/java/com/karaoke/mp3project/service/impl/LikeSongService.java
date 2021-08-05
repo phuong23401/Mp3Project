@@ -8,6 +8,8 @@ import com.karaoke.mp3project.service.ILikesongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LikeSongService implements ILikesongService {
     @Autowired
@@ -22,7 +24,6 @@ public class LikeSongService implements ILikesongService {
     public Iterable<LikeSong> findAllBySong(Song song) {
         return likeSongRepo.findAllBySong(song);
     }
-
     @Override
     public LikeSong findOne(Long id) {
         return likeSongRepo.findById(id).orElse(null);
@@ -36,5 +37,15 @@ public class LikeSongService implements ILikesongService {
     @Override
     public void saveLikesong(LikeSong likesong) {
         likeSongRepo.save(likesong);
+    }
+
+    @Override
+    public LikeSong save(LikeSong likeSong) {
+        return likeSongRepo.save(likeSong);
+    }
+
+    @Override
+    public List<LikeSong> findByUserContaining(String username) {
+        return likeSongRepo.findByUserContaining(username);
     }
 }

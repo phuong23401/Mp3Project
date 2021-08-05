@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlayListService implements IPlayListService {
@@ -32,8 +34,8 @@ public class PlayListService implements IPlayListService {
     }
 
     @Override
-    public PlayList findOne(Long id) {
-        return playListRepo.findById(id).orElse(null);
+    public Optional<PlayList> findOne(Long id) {
+        return playListRepo.findById(id);
     }
 
     @Override
@@ -45,4 +47,30 @@ public class PlayListService implements IPlayListService {
     public void savePlaylist(PlayList playlist) {
         playListRepo.save(playlist);
     }
+
+    @Override
+    public Optional<PlayList> findById(Long id) {
+        return playListRepo.findById(id);
+    }
+
+    @Override
+    public List<PlayList> findAllByNamePlayList(String namePlaylist) {
+        return playListRepo.findAllByNamePlayList(namePlaylist);
+    }
+
+    @Override
+    public List<PlayList> findAllByOrderByCreationTime() {
+        return playListRepo.findAllOrderByCreatedTime();
+    }
+
+    @Override
+    public List<PlayList> findAllOrderByNumberOfListen() {
+        return playListRepo.findAllOrderByNumberOfListen();
+    }
+
+    @Override
+    public List<PlayList> findAllOrderByNumberOfLike() {
+        return playListRepo.findAllOrderByNumberOfLike();
+    }
+
 }

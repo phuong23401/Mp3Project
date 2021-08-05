@@ -20,7 +20,7 @@ public class PlayList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Vui lòng nhập tên play list của bạn!")
+    @NotNull(message = "Vui lòng nhập tên playlist của bạn!")
     private String name;
     private String avatarUrl;
     private Timestamp createdTime;
@@ -32,14 +32,17 @@ public class PlayList {
     @JoinColumn(name = "user")
     private User user;
 
-//    @ManyToMany
-//    @EqualsAndHashCode.Exclude
-//    @ToString.Exclude
-//    @JoinTable(name = "playlist_song",
-//            joinColumns = {@JoinColumn(name = "playlist_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "song_id")})
-//    @JsonIgnoreProperties("playlists")
-//    private Set<Song> songs;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
+    @JoinTable(name = "playlist_song",
+            joinColumns = {@JoinColumn(name = "playlist_id")},
+            inverseJoinColumns = {@JoinColumn(name = "song_id")})
+    @JsonIgnoreProperties("playlists")
+    private Set<Song> songs;
+
+
+
 
     public PlayList() {
     }
@@ -119,4 +122,11 @@ public class PlayList {
         this.user = user;
     }
 
+    public Set<Song> getSongs() {
+        return songs;
+    }
+
+    public void setSongs(Set<Song> songs) {
+        this.songs = songs;
+    }
 }

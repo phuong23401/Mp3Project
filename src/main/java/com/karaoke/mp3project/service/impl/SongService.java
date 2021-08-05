@@ -7,6 +7,8 @@ import com.karaoke.mp3project.repo.SongRepo;
 import com.karaoke.mp3project.security.userprincipal.UserDtService;
 import com.karaoke.mp3project.service.ISongService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,8 +25,13 @@ public class SongService implements ISongService {
     UserDtService userDtService;
 
     @Override
-    public ArrayList<Song> findAll() {
-        return (ArrayList<Song>) songRepo.findAll();
+    public Page<Song> findAllSong(Pageable pageable) {
+        return songRepo.findAll(pageable);
+    }
+
+    @Override
+    public List<Song> findAll() {
+        return (List<Song>) songRepo.findAll();
     }
 
     @Override
@@ -64,8 +71,8 @@ public class SongService implements ISongService {
 
     @Override
     public void saveSong(Song song) {
-        User user = userDtService.getCurrentUser();
-        song.setUser(user);
+//        User user = userDtService.getCurrentUser();
+//        song.setUser(user);
         songRepo.save(song);
     }
 
@@ -77,5 +84,25 @@ public class SongService implements ISongService {
     @Override
     public List<Song> findAllByCreationTimeOrderByCreationTime() {
         return songRepo.findAllByNumberOfViewOrderByNumberOfView();
+    }
+
+    @Override
+    public Iterable<Song> findAllBySingerContainingAndUserContainingAndAuthorContainingAndNameContaining(String singer, User user, String author, String name) {
+        return songRepo.findAllBySingerContainingAndUserContainingAndAuthorContainingAndNameContaining(singer, user, author, name);
+    }
+
+    @Override
+    public Iterable<Song> findAllBySingerContaining(String singer) {
+        return songRepo.findAllBySingerContaining(singer);
+    }
+
+    @Override
+    public Iterable<Song> findAllByAuthorContaining(String author) {
+        return songRepo.findAllByAuthorContaining(author);
+    }
+
+    @Override
+    public Iterable<Song> findAllByUserContaining(String user) {
+        return songRepo.findAllByUserContaining(user);
     }
 }

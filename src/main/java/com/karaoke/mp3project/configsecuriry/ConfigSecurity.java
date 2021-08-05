@@ -55,10 +55,10 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(jwtEntryPoint).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-//                .authorizeRequests().antMatchers("/api/auth/**", "/home/**").permitAll()
-                .authorizeRequests().antMatchers("/**").permitAll()
-//                .antMatchers("/user/**", "/playlist/**", "/song/**" , "/likesong/**",
-//                        "/commentsong/**", "/likeplaylist/**", "/commentplaylist/**").access("hasRole('USER')")
+                .authorizeRequests().antMatchers("/home", "/api/auth/**").permitAll()
+//                .authorizeRequests().antMatchers("/**").permitAll()
+                .antMatchers("/song/**", "/profile/**").access("hasRole('USER')")
+                .antMatchers("/**").access("hasRole('ADMIN')")
                 .anyRequest().authenticated();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
