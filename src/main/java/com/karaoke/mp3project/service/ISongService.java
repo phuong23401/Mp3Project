@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface ISongService {
     Page<Song> findAllSong(Pageable pageable);
 
-    ArrayList<Song> findAll();
+    List<Song> findAll();
 
     Iterable<Song> findByName(String name);
 

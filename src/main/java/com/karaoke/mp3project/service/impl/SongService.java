@@ -30,8 +30,8 @@ public class SongService implements ISongService {
     }
 
     @Override
-    public ArrayList<Song> findAll() {
-        return (ArrayList<Song>) songRepo.findAll();
+    public List<Song> findAll() {
+        return (List<Song>) songRepo.findAll();
     }
 
     @Override
