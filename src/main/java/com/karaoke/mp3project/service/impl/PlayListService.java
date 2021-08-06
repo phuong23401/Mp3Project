@@ -25,7 +25,7 @@ public class PlayListService implements IPlayListService {
     }
 
     @Override
-    public Iterable<PlayList> findByUser(User user) {
+    public List<PlayList> findByUser(User user) {
         return playListRepo.findAllByUser(user);
     }
 
