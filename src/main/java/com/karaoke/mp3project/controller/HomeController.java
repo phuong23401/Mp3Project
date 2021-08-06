@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.sql.ResultSet;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -137,15 +138,6 @@ public class HomeController {
     @GetMapping("/newlestCreatedPlaylist")
     public ResponseEntity<List<PlayList>> getNewlestCreated() {
         List<PlayList> playlists = playlistService.findAllByOrderByCreationTime();
-        if (playlists.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(playlists, HttpStatus.OK);
-    }
-
-    @GetMapping("/topLikedPlaylist")
-    public ResponseEntity<List<PlayList>> getTopLiked() {
-        List<PlayList> playlists = playlistService.findAllOrderByNumberOfLike();
         if (playlists.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

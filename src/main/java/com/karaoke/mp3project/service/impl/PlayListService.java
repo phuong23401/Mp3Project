@@ -80,4 +80,9 @@ public class PlayListService implements IPlayListService {
         return songList;
     }
 
+    @Override
+    public Iterable<Number> countSongInPlaylist(Long id) {
+        return playListRepo.countSongInPlaylist(id);
+    }
+
 }
