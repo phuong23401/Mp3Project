@@ -95,45 +95,6 @@ public class PlayListController {
         return new ResponseEntity<>(playlist, HttpStatus.OK);
     }
 
-    @GetMapping("/topListened")
-    public ResponseEntity<List<PlayList>> getTopListened() {
-        List<PlayList> playlists = playlistService.findAllOrderByNumberOfListen();
-        if (playlists.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(playlists, HttpStatus.OK);
-    }
-
-    @GetMapping("/newlestCreated")
-    public ResponseEntity<List<PlayList>> getNewlestCreated() {
-        List<PlayList> playlists = playlistService.findAllByOrderByCreationTime();
-        if (playlists.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(playlists, HttpStatus.OK);
-    }
-
-    @GetMapping("/topLiked")
-    public ResponseEntity<List<PlayList>> getTopLiked() {
-        List<PlayList> playlists = playlistService.findAllOrderByNumberOfLike();
-        if (playlists.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(playlists, HttpStatus.OK);
-    }
-
-    @GetMapping("/countListen/{id}")
-    public ResponseEntity<?> countListenById(@PathVariable Long id) {
-        try {
-            PlayList playlist = playlistService.findOne(id).orElseThrow(EntityNotFoundException::new);
-            playlist.setListen(playlist.getListen() + 1);
-            playlistService.savePlaylist(playlist);
-            return new ResponseEntity<>(playlist, HttpStatus.OK);
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatus.NOT_FOUND);
-        }
-    }
-
     @GetMapping("/getAllSong/{id}")
     public ResponseEntity<List<Song>> getAllSongInPlaylist(@PathVariable Long id) {
         List<Song> songList = playlistService.findAllSongInPlaylist(id);
