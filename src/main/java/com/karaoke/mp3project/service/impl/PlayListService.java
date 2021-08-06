@@ -5,6 +5,7 @@ import com.karaoke.mp3project.model.PlayList;
 import com.karaoke.mp3project.model.Song;
 import com.karaoke.mp3project.model.User;
 import com.karaoke.mp3project.repo.PlayListRepo;
+import com.karaoke.mp3project.repo.SongRepo;
 import com.karaoke.mp3project.service.IPlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ import java.util.Optional;
 
 @Service
 public class PlayListService implements IPlayListService {
+
+    @Autowired
+    private SongRepo songRepo;
 
     @Autowired
     private PlayListRepo playListRepo;
@@ -76,8 +80,8 @@ public class PlayListService implements IPlayListService {
 
     @Override
     public List<Song> findAllSongInPlaylist(Long id) {
-        List<Song> songList = playListRepo.findAllSongInPlaylist(id);
-        return songList;
+        Optional<PlayList> playList = playListRepo.findById(id);
+        return songRepo.findSongByPlaylist(playList.get());
     }
 
 }
