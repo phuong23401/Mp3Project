@@ -24,5 +24,4 @@ public class HomeController {
         List<Song> songs = songService.findAll();
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
-
 }
