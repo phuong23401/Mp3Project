@@ -58,8 +58,7 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/auth/**", "/home/**").permitAll()
 //                .antMatchers( "/song/**", "/profile/**").access("hasRole('USER')")
-//                .antMatchers( "/song/**").hasAnyAuthority("ROLE_USER")
-                .antMatchers( "/**").hasAnyAuthority("ROLE_ADMIN")
+//                .antMatchers( "/profile/**").hasAnyAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
