@@ -2,6 +2,7 @@ package com.karaoke.mp3project.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 public class CommentSong {
