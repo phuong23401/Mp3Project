@@ -46,5 +46,4 @@ public class HomeController {
             return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatus.NOT_FOUND);
         }
     }
-
 }
