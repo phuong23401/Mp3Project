@@ -10,18 +10,14 @@ public class LikePlayList {
 
     private boolean status = false;
 
-    @ManyToOne
-    @JoinColumn(name = "user")
-    private User user;
+    private String user;
 
-    @ManyToOne
-    @JoinColumn(name = "playlist")
-    private PlayList playlist;
+    private String playlist;
 
     public LikePlayList() {
     }
 
-    public LikePlayList(Long id, boolean status, User user, PlayList playlist) {
+    public LikePlayList(Long id, boolean status, String user, String playlist) {
         this.id = id;
         this.status = status;
         this.user = user;
@@ -44,19 +40,19 @@ public class LikePlayList {
         this.status = status;
     }
 
-    public User getUser() {
+    public String getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(String user) {
         this.user = user;
     }
 
-    public PlayList getPlaylist() {
+    public String getPlaylist() {
         return playlist;
     }
 
-    public void setPlaylist(PlayList playlist) {
+    public void setPlaylist(String playlist) {
         this.playlist = playlist;
     }
 }

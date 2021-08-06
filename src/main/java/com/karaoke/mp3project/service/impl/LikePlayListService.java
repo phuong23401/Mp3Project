@@ -7,6 +7,8 @@ import com.karaoke.mp3project.service.ILikePlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LikePlayListService implements ILikePlayListService {
     @Autowired
@@ -35,5 +37,15 @@ public class LikePlayListService implements ILikePlayListService {
     @Override
     public void saveLikeplaylist(LikePlayList likeplaylist) {
         likePlayListRepo.save(likeplaylist);
+    }
+
+    @Override
+    public LikePlayList save(LikePlayList likePlayList) {
+        return likePlayListRepo.save(likePlayList);
+    }
+
+    @Override
+    public List<LikePlayList> findByUserContaining(String username) {
+        return likePlayListRepo.findByUserContaining(username);
     }
 }
