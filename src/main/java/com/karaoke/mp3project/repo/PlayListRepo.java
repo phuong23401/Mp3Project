@@ -40,4 +40,7 @@ public interface PlayListRepo extends JpaRepository<PlayList, Long> {
 
     @Query(value = "select * from `song` where `song`.`id` in (select `song_id` from `playlist_song` where `playlist_song`.`playlist_id` = ?)", nativeQuery = true)
     List<Song> findAllSongInPlaylist(Long id);
+
+
+
 }
