@@ -2,6 +2,7 @@ package com.karaoke.mp3project.controller;
 
 import com.karaoke.mp3project.dto.respon.MessageResponse;
 import com.karaoke.mp3project.model.PlayList;
+import com.karaoke.mp3project.model.Song;
 import com.karaoke.mp3project.model.User;
 import com.karaoke.mp3project.security.userprincipal.UserDtService;
 import com.karaoke.mp3project.service.impl.PlayListService;
@@ -131,5 +132,15 @@ public class PlayListController {
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/getAllSong/{id}")
+    public ResponseEntity<List<Song>> getAllSongInPlaylist(@PathVariable Long id) {
+        List<Song> songList = playlistService.findAllSongInPlaylist(id);
+        System.out.println(songList);
+        if (songList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 }
