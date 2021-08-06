@@ -50,9 +50,12 @@ public class SongController {
         Timestamp createdTime = new Timestamp(System.currentTimeMillis());
         Timestamp upDateTime = new Timestamp(System.currentTimeMillis());
         Long viewnumber = Long.valueOf(0);
+
+
         song.setCreatedTime(createdTime);
         song.setUpdatedTime(upDateTime);
         song.setNumberOfView(viewnumber);
+        song.setCountLike(0L);
         songService.saveSong(song);
         return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
     }
