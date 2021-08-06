@@ -24,6 +24,8 @@ public interface ISongService {
 
     Iterable<Song> findAllByLike();
 
+    List<Song> findSongByUser(Long id);
+
     Optional<Song> findOne(Long id);
     Song findOneName(Long id);
     void deleteSong(Long id);

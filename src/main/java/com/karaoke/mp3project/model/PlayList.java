@@ -41,10 +41,16 @@ public class PlayList {
     @JsonIgnoreProperties("playlists")
     private Set<Song> songs;
 
-
-
-
     public PlayList() {
+    }
+
+    public PlayList(Long id, String name, String avatarUrl, Long countLike, Long listen, Set<Song> songs) {
+        this.id = id;
+        this.name = name;
+        this.avatarUrl = avatarUrl;
+        this.countLike = countLike;
+        this.listen = listen;
+        this.songs = songs;
     }
 
     public PlayList(Long id, String name, String avatarUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, Long listen, User user) {

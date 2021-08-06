@@ -23,7 +23,7 @@ public class Song {
     @NotNull(message = "Vui lòng nhập tên bài hát!")
     @Size(max= 100, message = "Vui lòng nhập đúng tên bài hát!")
     private String name;
-
+    @Lob
     private String description;
 
     @Size(max = 50, message = "Vui lòng không spam!")

@@ -2,6 +2,7 @@ package com.karaoke.mp3project.controller;
 
 import com.karaoke.mp3project.dto.respon.MessageResponse;
 import com.karaoke.mp3project.model.PlayList;
+import com.karaoke.mp3project.model.Song;
 import com.karaoke.mp3project.model.User;
 import com.karaoke.mp3project.security.userprincipal.UserDtService;
 import com.karaoke.mp3project.service.impl.PlayListService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.sql.Timestamp;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,19 +28,11 @@ public class PlayListController {
     @Autowired
     private UserDtService userDtService;
 
-    @GetMapping("/getAll")
-    public ResponseEntity<List<PlayList>> getAllPlaylist() {
-        List<PlayList> playlists = playlistService.findAll();
-        if (playlists.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(playlists, HttpStatus.OK);
-    }
 
     @PostMapping("/create")
     public ResponseEntity<?> createPlaylist(@Valid @RequestBody PlayList playlist) {
         if (playlist.getAvatarUrl() == null || playlist.getAvatarUrl().trim().isEmpty()) {
-            return new ResponseEntity<>(new MessageResponse("No Avatar"), HttpStatus.OK);
+            return new ResponseEntity<>(new MessageResponse("No Avatar"), HttpStatus.BAD_REQUEST);
         }
         User userCurrent = userDtService.getCurrentUser();
         Timestamp createdTime = new Timestamp(System.currentTimeMillis());
@@ -85,51 +79,23 @@ public class PlayListController {
         return new ResponseEntity<>(new MessageResponse("Delete playlist successfully !"), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getPlaylistById(@PathVariable Long id) {
-        Optional<PlayList> playlist = playlistService.findOne(id);
-        if (!playlist.isPresent()) {
+    @GetMapping()
+    public ResponseEntity<?> getPlaylistByUser() {
+        User userCurrent = userDtService.getCurrentUser();
+        List<PlayList> playlist = playlistService.findByUser(userCurrent);
+        if (playlist.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(playlist, HttpStatus.OK);
     }
 
-    @GetMapping("/topListened")
-    public ResponseEntity<List<PlayList>> getTopListened() {
-        List<PlayList> playlists = playlistService.findAllOrderByNumberOfListen();
-        if (playlists.isEmpty()) {
+    @GetMapping("/getAllSong/{id}")
+    public ResponseEntity<List<Song>> getAllSongInPlaylist(@PathVariable Long id) {
+        List<Song> songList = playlistService.findAllSongInPlaylist(id);
+        System.out.println(songList);
+        if (songList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(playlists, HttpStatus.OK);
-    }
-
-    @GetMapping("/newlestCreated")
-    public ResponseEntity<List<PlayList>> getNewlestCreated() {
-        List<PlayList> playlists = playlistService.findAllByOrderByCreationTime();
-        if (playlists.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(playlists, HttpStatus.OK);
-    }
-
-    @GetMapping("/topLiked")
-    public ResponseEntity<List<PlayList>> getTopLiked() {
-        List<PlayList> playlists = playlistService.findAllOrderByNumberOfLike();
-        if (playlists.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(playlists, HttpStatus.OK);
-    }
-
-    @GetMapping("/countListen/{id}")
-    public ResponseEntity<?> countListenById(@PathVariable Long id) {
-        try {
-            PlayList playlist = playlistService.findOne(id).orElseThrow(EntityNotFoundException::new);
-            playlist.setListen(playlist.getListen() + 1);
-            playlistService.savePlaylist(playlist);
-            return new ResponseEntity<>(playlist, HttpStatus.OK);
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(songList, HttpStatus.OK);
     }
 }

@@ -13,6 +13,10 @@ import java.util.List;
 public interface SongRepo extends JpaRepository<Song, Long> {
     Iterable<Song> findAllByUser(User user);
 
+    @Query(value = "select * from song where song.user_id = ?", nativeQuery = true)
+    List<Song> findSongByUser(Long id);
+
+
     Iterable<Song> findAllBySinger(Singer singer);
 
     Iterable<Song> findAllByNameContaining(String name);

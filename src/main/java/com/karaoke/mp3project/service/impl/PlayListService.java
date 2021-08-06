@@ -2,6 +2,7 @@ package com.karaoke.mp3project.service.impl;
 
 
 import com.karaoke.mp3project.model.PlayList;
+import com.karaoke.mp3project.model.Song;
 import com.karaoke.mp3project.model.User;
 import com.karaoke.mp3project.repo.PlayListRepo;
 import com.karaoke.mp3project.service.IPlayListService;
@@ -24,7 +25,7 @@ public class PlayListService implements IPlayListService {
     }
 
     @Override
-    public Iterable<PlayList> findByUser(User user) {
+    public List<PlayList> findByUser(User user) {
         return playListRepo.findAllByUser(user);
     }
 
@@ -71,6 +72,12 @@ public class PlayListService implements IPlayListService {
     @Override
     public List<PlayList> findAllOrderByNumberOfLike() {
         return playListRepo.findAllOrderByNumberOfLike();
+    }
+
+    @Override
+    public List<Song> findAllSongInPlaylist(Long id) {
+        List<Song> songList = playListRepo.findAllSongInPlaylist(id);
+        return songList;
     }
 
 }
