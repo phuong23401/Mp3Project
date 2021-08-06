@@ -56,7 +56,7 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(jwtEntryPoint).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/api/auth/**", "/home/**").permitAll()
+                .antMatchers("/api/auth/**", "/home/**","/singer/**").permitAll()
                 .antMatchers( "/song/**", "/profile/**").access("hasRole('USER')")
 //                .antMatchers( "/song/**").hasAnyAuthority("ROLE_USER")
                 .antMatchers( "/**").hasAnyAuthority("ROLE_ADMIN")
