@@ -154,6 +154,16 @@ public class HomeController {
         }
         return new ResponseEntity<>(playlists, HttpStatus.OK);
     }
+    @GetMapping("/getAll")
+    public ResponseEntity<List<PlayList>> getAllPlaylist() {
+        List<PlayList> playlists = playlistService.findAll();
+        if (playlists.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
+
+
     @GetMapping("/comment-song/{id}")
     public ResponseEntity<Iterable<CommentSong>> getAllCommentBySong(@PathVariable("id") Long id){
         Song song = songService.findById(id);

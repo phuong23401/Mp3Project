@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.sql.Timestamp;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,19 +28,11 @@ public class PlayListController {
     @Autowired
     private UserDtService userDtService;
 
-    @GetMapping("/getAll")
-    public ResponseEntity<List<PlayList>> getAllPlaylist() {
-        List<PlayList> playlists = playlistService.findAll();
-        if (playlists.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(playlists, HttpStatus.OK);
-    }
 
     @PostMapping("/create")
     public ResponseEntity<?> createPlaylist(@Valid @RequestBody PlayList playlist) {
         if (playlist.getAvatarUrl() == null || playlist.getAvatarUrl().trim().isEmpty()) {
-            return new ResponseEntity<>(new MessageResponse("No Avatar"), HttpStatus.OK);
+            return new ResponseEntity<>(new MessageResponse("No Avatar"), HttpStatus.BAD_REQUEST);
         }
         User userCurrent = userDtService.getCurrentUser();
         Timestamp createdTime = new Timestamp(System.currentTimeMillis());
@@ -86,22 +79,25 @@ public class PlayListController {
         return new ResponseEntity<>(new MessageResponse("Delete playlist successfully !"), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getPlaylistById(@PathVariable Long id) {
-        Optional<PlayList> playlist = playlistService.findOne(id);
-        if (!playlist.isPresent()) {
+    @GetMapping()
+    public ResponseEntity<?> getPlaylistByUser() {
+        User userCurrent = userDtService.getCurrentUser();
+        List<PlayList> playlist = playlistService.findByUser(userCurrent);
+        if (playlist.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(playlist, HttpStatus.OK);
     }
 
-    @GetMapping("/getAllSong/{id}")
-    public ResponseEntity<List<Song>> getAllSongInPlaylist(@PathVariable Long id) {
-        List<Song> songList = playlistService.findAllSongInPlaylist(id);
-        System.out.println(songList);
-        if (songList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+    @GetMapping("/getallsong/{id}")
+    public ResponseEntity<Iterable<Song>> getAllSongInPlaylist(@PathVariable Long id) {
+        Iterable<Song> songList = playlistService.findAllSongInPlaylist(id);
         return new ResponseEntity<>(songList, HttpStatus.OK);
     }
+
+    @GetMapping("/get/{id}")
+    private ResponseEntity<Optional<PlayList>> getPlaylist(@PathVariable Long id){
+        return new ResponseEntity<>(playlistService.findById(id), HttpStatus.OK) ;
+    }
+
 }
