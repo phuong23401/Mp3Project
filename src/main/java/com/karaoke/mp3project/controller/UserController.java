@@ -32,6 +32,12 @@ public class UserController {
         return new ResponseEntity<>(userService.findOne(id), HttpStatus.OK);
     }
 
+    @GetMapping("/get/{id}")
+    public ResponseEntity<User> getUserID(@PathVariable("id") Long id){
+        User user = userService.findOne(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
     @PutMapping("/changeinfor")
     public ResponseEntity<MessageResponse> changeInforMations(@RequestBody UserCurrentUpdate userCurrentUpdate){
         User userCurrent = userDtService.getCurrentUser();

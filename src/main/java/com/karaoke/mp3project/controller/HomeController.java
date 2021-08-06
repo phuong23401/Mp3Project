@@ -3,6 +3,7 @@ package com.karaoke.mp3project.controller;
 import com.karaoke.mp3project.dto.respon.MessageResponse;
 import com.karaoke.mp3project.model.*;
 import com.karaoke.mp3project.security.userprincipal.UserDtService;
+import com.karaoke.mp3project.service.ICommentSongService;
 import com.karaoke.mp3project.service.impl.*;
 import com.karaoke.mp3project.security.userprincipal.UserDtService;
 import com.karaoke.mp3project.service.impl.LikeSongService;
@@ -33,6 +34,8 @@ public class HomeController {
 
     @Autowired
     private LikePlayListService likePlayListService;
+    @Autowired
+    private ICommentSongService commentsongService;
 
     @GetMapping("/new")
     public ResponseEntity<Iterable<Song>> getAllSongNew() {
@@ -151,4 +154,11 @@ public class HomeController {
         }
         return new ResponseEntity<>(playlists, HttpStatus.OK);
     }
+    @GetMapping("/comment-song/{id}")
+    public ResponseEntity<Iterable<CommentSong>> getAllCommentBySong(@PathVariable("id") Long id){
+        Song song = songService.findById(id);
+        Iterable<CommentSong> comments = commentsongService.findAllBySong(song);
+        return new ResponseEntity<>(comments, HttpStatus.OK);
+    }
+
 }
