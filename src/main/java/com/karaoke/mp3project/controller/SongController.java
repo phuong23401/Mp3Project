@@ -49,12 +49,12 @@ public class SongController {
         }
         Timestamp createdTime = new Timestamp(System.currentTimeMillis());
         Timestamp upDateTime = new Timestamp(System.currentTimeMillis());
+        User user = userDtService.getCurrentUser();
         Long viewnumber = Long.valueOf(0);
-
-
         song.setCreatedTime(createdTime);
         song.setUpdatedTime(upDateTime);
         song.setNumberOfView(viewnumber);
+        song.setUser(user);
         song.setCountLike(0L);
         songService.saveSong(song);
         return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
@@ -77,13 +77,15 @@ public class SongController {
         Optional<Song> song = songService.findOne(id);
         if (!song.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else {
+        } else {
 //            if (newSong.getAvatarUrl() == null || newSong.getAvatarUrl().trim().isEmpty()) {
 //                return new ResponseEntity<>(new MessageResponse("noavatar"), HttpStatus.OK);
 //            }
 //            if (newSong.getFileUrl() == null || newSong.getFileUrl().trim().isEmpty()) {
 //                return new ResponseEntity<>(new MessageResponse("nomp3url"), HttpStatus.OK);
 //            }
+            User user = userDtService.getCurrentUser();
+            newSong.setUser(user);
             Timestamp createdTime = new Timestamp(System.currentTimeMillis());
             Timestamp upDateTime = new Timestamp(System.currentTimeMillis());
             newSong.setCreatedTime(createdTime);
@@ -104,7 +106,6 @@ public class SongController {
     }
 
 
-
     @RequestMapping(value = "/songs", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Song>> getAllSong() {
         List<Song> songList = songService.findAll();
@@ -120,9 +121,9 @@ public class SongController {
         List<Song> listSong = new ArrayList<>();
         Set<Role> roles = userCurrent.getRole();
         boolean check = false;
-        for (Role r: roles
-             ) {
-            if(r.getName().toString().equals("ROLE_ADMIN")){
+        for (Role r : roles
+        ) {
+            if (r.getName().toString().equals("ROLE_ADMIN")) {
                 check = true;
             }
         }
@@ -136,6 +137,18 @@ public class SongController {
             if (listSong.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
+        }
+        return new ResponseEntity<>(listSong, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/getmysong", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Song>> getMySongs() {
+        User userCurrent = userDtService.getCurrentUser();
+        List<Song> listSong = new ArrayList<>();
+        listSong = songService.findSongByUser(userCurrent.getId());
+        if (listSong.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(listSong, HttpStatus.OK);
     }
@@ -178,8 +191,35 @@ public class SongController {
         if (songs == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(songs,HttpStatus.OK);
+        return new ResponseEntity<>(songs, HttpStatus.OK);
     }
+    @GetMapping("/song-like-up/{id}")
+    public ResponseEntity<?> getSongLikedById(@PathVariable Long id) {
+        try {
+            Song song = songService.findOne(id).orElseThrow(EntityNotFoundException::new);
+            User user =  userDtService.getCurrentUser();
+            List<LikeSong> likeSongs = likeSongService.findByUserContaining(user.getUsername());
+            if (likeSongs.size() != 0){
+                for (int i = 0; i < likeSongs.size(); i++) {
+                    if (likeSongs.get(i).getSong().equals(song.getName())){
+                       likeSongService.deleteLikesong(likeSongs.get(i).getId());
+                       song.setCountLike(song.getCountLike() -1);
+                       songService.saveSong(song);
+                       return  new ResponseEntity<>(song,HttpStatus.OK);
+                    }
 
+                }
+            }
+            LikeSong likeSong = new LikeSong();
+            likeSong.setSong(song.getName());
+            likeSong.setUser(user.getUsername());
+            likeSongService.save(likeSong);
+            song.setCountLike(song.getCountLike() +1);
+            songService.saveSong(song);
+            return new ResponseEntity<>(song,HttpStatus.OK);
+        }catch (EntityNotFoundException e){
+            return new ResponseEntity<>(new MessageResponse(e.getMessage()),HttpStatus.NOT_FOUND);
+        }
+    }
 
 }

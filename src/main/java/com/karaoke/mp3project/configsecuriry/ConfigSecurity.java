@@ -57,9 +57,11 @@ public class ConfigSecurity extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers("/api/auth/**", "/home/**").permitAll()
-                .antMatchers( "/song/**", "/profile/**", "/category/**", "/singers/**", "/playlist/**").access("hasRole('ADMIN')")
-                .antMatchers( "/song/**", "/profile/**", "/category/**", "/singers/**", "/playlist/**").access("hasRole('USER')")
+                .antMatchers("/song/**", "/profile/**", "/category/**", "/singers/**", "/playlist/**").hasAnyAuthority("ROLE_USER","ROLE_ADMIN")
+//                .antMatchers( "/song/**", "/profile/**", "/category/**", "/singers/**", "/playlist/**").access("hasRole('ADMIN')")
+//                .antMatchers( "/song/**", "/profile/**", "/category/**", "/singers/**", "/playlist/**").access("hasRole('USER')")
                 .anyRequest().authenticated();
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
 }
