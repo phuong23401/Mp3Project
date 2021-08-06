@@ -83,6 +83,8 @@ public class SongController {
 //            if (newSong.getFileUrl() == null || newSong.getFileUrl().trim().isEmpty()) {
 //                return new ResponseEntity<>(new MessageResponse("nomp3url"), HttpStatus.OK);
 //            }
+            User user = userDtService.getCurrentUser();
+            newSong.setUser(user);
             Timestamp createdTime = new Timestamp(System.currentTimeMillis());
             Timestamp upDateTime = new Timestamp(System.currentTimeMillis());
             newSong.setCreatedTime(createdTime);
