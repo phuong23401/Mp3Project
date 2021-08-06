@@ -39,6 +39,7 @@ public interface PlayListRepo extends JpaRepository<PlayList, Long> {
     @Query(value = "select * from `play_list` order by `count_like` desc limit 10", nativeQuery = true)
     List<PlayList> findAllOrderByNumberOfLike();
 
-    @Query(value = "select * from `song` where `song`.`id` in (select `song_id` from `playlist_song` where `playlist_song`.`playlist_id`= :id )", nativeQuery = true)
-    List<Song> findAllSongInPlaylist(@Param("id") Long id);
+    @Query(value = "select * from `song` where `song`.`id` in (select `song_id` from `playlist_song` where `playlist_song`.`playlist_id`= :id)", nativeQuery = true)
+    Iterable<Song> findAllSongInPlaylist(@Param("id") Long id);
+
 }

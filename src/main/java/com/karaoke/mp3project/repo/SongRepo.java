@@ -1,5 +1,6 @@
 package com.karaoke.mp3project.repo;
 
+import com.karaoke.mp3project.model.PlayList;
 import com.karaoke.mp3project.model.Singer;
 import com.karaoke.mp3project.model.Song;
 import com.karaoke.mp3project.model.User;
@@ -38,5 +39,6 @@ public interface SongRepo extends JpaRepository<Song, Long> {
 
     Iterable<Song> findAllBySingerContainingAndUserContainingAndAuthorContainingAndNameContaining(String singer,User user,String author,String name);
 
+    List<Song> findSongByPlaylist(PlayList playList);
 
 }

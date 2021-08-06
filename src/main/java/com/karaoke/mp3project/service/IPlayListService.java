@@ -33,5 +33,5 @@ public interface IPlayListService {
 
     List<PlayList> findAllOrderByNumberOfLike();
 
-    List<Song> findAllSongInPlaylist(Long id);
+    Iterable<Song> findAllSongInPlaylist(Long id);
 }

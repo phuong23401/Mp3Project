@@ -90,10 +90,10 @@ public class PlayListController {
     }
 
     @GetMapping("/getAllSong/{id}")
-    public ResponseEntity<List<Song>> getAllSongInPlaylist(@PathVariable Long id) {
-        List<Song> songList = playlistService.findAllSongInPlaylist(id);
+    public ResponseEntity<Iterable<Song>> getAllSongInPlaylist(@PathVariable Long id) {
+        Iterable<Song> songList = playlistService.findAllSongInPlaylist(id);
         System.out.println(songList);
-        if (songList.isEmpty()) {
+        if (songList == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(songList, HttpStatus.OK);
