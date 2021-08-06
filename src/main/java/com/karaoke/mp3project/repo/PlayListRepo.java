@@ -6,13 +6,14 @@ import com.karaoke.mp3project.model.Song;
 import com.karaoke.mp3project.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public interface PlayListRepo extends JpaRepository<PlayList, Long> {
-    Iterable<PlayList> findAllByUser(User user);
+    List<PlayList> findAllByUser(User user);
 
 //    Iterable<PlayList> findAllBySinger(Singer singer);
 
@@ -38,6 +39,7 @@ public interface PlayListRepo extends JpaRepository<PlayList, Long> {
     @Query(value = "select * from `play_list` order by `count_like` desc limit 10", nativeQuery = true)
     List<PlayList> findAllOrderByNumberOfLike();
 
-    @Query(value = "select * from `song` where `song`.`id` in (select `song_id` from `playlist_song` where `playlist_song`.`playlist_id` = ?)", nativeQuery = true)
-    List<Song> findAllSongInPlaylist(Long id);
+    @Query(value = "select * from `song` where `song`.`id` in (select `song_id` from `playlist_song` where `playlist_song`.`playlist_id`= :id)", nativeQuery = true)
+    Iterable<Song> findAllSongInPlaylist(@Param("id") Long id);
+
 }

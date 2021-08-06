@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface IPlayListService {
     ArrayList<PlayList> findAll();
 
-    Iterable<PlayList> findByUser(User user);
+    List<PlayList> findByUser(User user);
 
     Iterable<PlayList> findByName(String name);
 
@@ -33,5 +33,5 @@ public interface IPlayListService {
 
     List<PlayList> findAllOrderByNumberOfLike();
 
-    List<Song> findAllSongInPlaylist(Long id);
+    Iterable<Song> findAllSongInPlaylist(Long id);
 }

@@ -3,7 +3,6 @@ package com.karaoke.mp3project.controller;
 import com.karaoke.mp3project.dto.respon.MessageResponse;
 import com.karaoke.mp3project.model.*;
 import com.karaoke.mp3project.security.userprincipal.UserDtService;
-import com.karaoke.mp3project.service.ICommentSongService;
 import com.karaoke.mp3project.service.impl.*;
 import com.karaoke.mp3project.security.userprincipal.UserDtService;
 import com.karaoke.mp3project.service.impl.LikeSongService;
@@ -34,8 +33,6 @@ public class HomeController {
 
     @Autowired
     private LikePlayListService likePlayListService;
-    @Autowired
-    private ICommentSongService commentsongService;
 
     @GetMapping("/new")
     public ResponseEntity<Iterable<Song>> getAllSongNew() {
