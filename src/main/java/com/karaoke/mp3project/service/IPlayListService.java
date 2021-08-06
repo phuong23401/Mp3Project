@@ -3,6 +3,7 @@ package com.karaoke.mp3project.service;
 
 
 import com.karaoke.mp3project.model.PlayList;
+import com.karaoke.mp3project.model.Song;
 import com.karaoke.mp3project.model.User;
 
 import java.util.ArrayList;
@@ -31,4 +32,6 @@ public interface IPlayListService {
     List<PlayList> findAllOrderByNumberOfListen();
 
     List<PlayList> findAllOrderByNumberOfLike();
+
+    List<Song> findAllSongInPlaylist(Long id);
 }

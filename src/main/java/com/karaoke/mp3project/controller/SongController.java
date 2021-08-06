@@ -55,6 +55,7 @@ public class SongController {
         song.setUpdatedTime(upDateTime);
         song.setNumberOfView(viewnumber);
         song.setUser(user);
+        song.setCountLike(0L);
         songService.saveSong(song);
         return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
     }
@@ -196,20 +197,19 @@ public class SongController {
         }
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
-
     @GetMapping("/song-like-up/{id}")
     public ResponseEntity<?> getSongLikedById(@PathVariable Long id) {
         try {
             Song song = songService.findOne(id).orElseThrow(EntityNotFoundException::new);
-            User user = userDtService.getCurrentUser();
+            User user =  userDtService.getCurrentUser();
             List<LikeSong> likeSongs = likeSongService.findByUserContaining(user.getUsername());
-            if (likeSongs.size() != 0) {
+            if (likeSongs.size() != 0){
                 for (int i = 0; i < likeSongs.size(); i++) {
-                    if (likeSongs.get(i).getSong().equals(song.getName())) {
-                        likeSongService.deleteLikesong(likeSongs.get(i).getId());
-                        song.setCountLike(song.getCountLike() - 1);
-                        songService.saveSong(song);
-                        return new ResponseEntity<>(song, HttpStatus.OK);
+                    if (likeSongs.get(i).getSong().equals(song.getName())){
+                       likeSongService.deleteLikesong(likeSongs.get(i).getId());
+                       song.setCountLike(song.getCountLike() -1);
+                       songService.saveSong(song);
+                       return  new ResponseEntity<>(song,HttpStatus.OK);
                     }
 
                 }
@@ -218,11 +218,11 @@ public class SongController {
             likeSong.setSong(song.getName());
             likeSong.setUser(user.getUsername());
             likeSongService.save(likeSong);
-            song.setCountLike(song.getCountLike() + 1);
+            song.setCountLike(song.getCountLike() +1);
             songService.saveSong(song);
-            return new ResponseEntity<>(song, HttpStatus.OK);
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(song,HttpStatus.OK);
+        }catch (EntityNotFoundException e){
+            return new ResponseEntity<>(new MessageResponse(e.getMessage()),HttpStatus.NOT_FOUND);
         }
     }
 

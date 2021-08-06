@@ -4,6 +4,8 @@ package com.karaoke.mp3project.service;
 import com.karaoke.mp3project.model.LikePlayList;
 import com.karaoke.mp3project.model.PlayList;
 
+import java.util.List;
+
 public interface ILikePlayListService {
     Iterable<LikePlayList> findAll();
 
@@ -14,4 +16,8 @@ public interface ILikePlayListService {
     void deleteLikeplaylist(Long id);
 
     void saveLikeplaylist(LikePlayList likeplaylist);
+
+    LikePlayList save(LikePlayList likePlayList);
+
+    List<LikePlayList> findByUserContaining(String username);
 }
