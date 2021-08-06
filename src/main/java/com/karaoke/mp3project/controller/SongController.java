@@ -59,14 +59,18 @@ public class SongController {
         return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteSong(@PathVariable Long id) {
+    @PostMapping("/delete")
+    public ResponseEntity<?> deleteSong(@RequestBody Long id) {
         Optional<Song> song = songService.findOne(id);
         if (!song.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        } else {
+            song.get().setUser(null);
+            songService.deleteSong(song.get().getId());
+            return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
         }
-        songService.deleteSong(song.get().getId());
-        return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
+
     }
 
 
