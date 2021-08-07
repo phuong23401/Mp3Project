@@ -1,10 +1,12 @@
 package com.karaoke.mp3project.controller;
 
 import com.karaoke.mp3project.dto.respon.MessageResponse;
+import com.karaoke.mp3project.model.CommentPlayList;
 import com.karaoke.mp3project.model.CommentSong;
 import com.karaoke.mp3project.model.User;
 import com.karaoke.mp3project.security.userprincipal.UserDtService;
 import com.karaoke.mp3project.service.ICommentSongService;
+import com.karaoke.mp3project.service.impl.CommentPlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +32,31 @@ public class CommentSongController {
     private ICommentSongService commentsongService;
 
     @Autowired
+    private CommentPlayListService commentPlayListService;
+
+    @Autowired
     private  UserDtService userDtService;
+
     @PostMapping
     private ResponseEntity<MessageResponse> createCommentSong(@RequestBody CommentSong commentsong){
         User user = userDtService.getCurrentUser();
         Timestamp createdTime = new Timestamp(System.currentTimeMillis());
+
         commentsong.setCreatedTime(createdTime);
         commentsong.setUser(user);
         commentsongService.saveComment(commentsong);
+        String message = "Success";
+        return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
+    }
+
+    @PostMapping("/playlist")
+    private ResponseEntity<MessageResponse> createCommentPlaylist(@RequestBody CommentPlayList commentPlayList){
+        User user = userDtService.getCurrentUser();
+        Timestamp createdTime = new Timestamp(System.currentTimeMillis());
+
+        commentPlayList.setCreatedTime(createdTime);
+        commentPlayList.setUser(user);
+        commentPlayListService.saveCommentplaylist(commentPlayList);
         String message = "Success";
         return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
     }

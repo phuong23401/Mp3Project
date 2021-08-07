@@ -1,6 +1,7 @@
 package com.karaoke.mp3project.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 public class CommentPlayList {
@@ -13,6 +14,7 @@ public class CommentPlayList {
     @ManyToOne
     @JoinColumn(name = "user")
     private User user;
+    private Timestamp createdTime;
 
     @ManyToOne
     @JoinColumn(name = "playlist")
@@ -25,6 +27,14 @@ public class CommentPlayList {
         this.id = id;
         this.content = content;
         this.user = user;
+        this.playlist = playlist;
+    }
+
+    public CommentPlayList(Long id, String content, User user, Timestamp createdTime, PlayList playlist) {
+        this.id = id;
+        this.content = content;
+        this.user = user;
+        this.createdTime = createdTime;
         this.playlist = playlist;
     }
 
@@ -42,6 +52,14 @@ public class CommentPlayList {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Timestamp getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Timestamp createdTime) {
+        this.createdTime = createdTime;
     }
 
     public User getUser() {
