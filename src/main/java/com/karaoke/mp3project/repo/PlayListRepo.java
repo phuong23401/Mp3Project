@@ -6,26 +6,16 @@ import com.karaoke.mp3project.model.Song;
 import com.karaoke.mp3project.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Observable;
 
 @Repository
 public interface PlayListRepo extends JpaRepository<PlayList, Long> {
-    Iterable<PlayList> findAllByUser(User user);
-
-//    Iterable<PlayList> findAllBySinger(Singer singer);
+    List<PlayList> findAllByUser(User user);
 
     Iterable<PlayList> findAllByNameContaining(String name);
-//
-//    Iterable<PlayList> findAllBySingerContaining(String singer);
-//
-//    Iterable<PlayList> findAllByAuthorContaining(String author);
-//
-//    Iterable<PlayList> findAllByUserContaining(String user);
-
-    Iterable<PlayList> findAllByOrderByCountLikeDesc();
 
     @Query(value = "select * from `play_list` where `play_list`.`name` like ?", nativeQuery = true)
     List<PlayList> findAllByNamePlayList(String namePlayList);

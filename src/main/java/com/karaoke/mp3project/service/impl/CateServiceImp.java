@@ -16,8 +16,8 @@ public class CateServiceImp  {
     public List<Category> getAll(){
         return categoryRepository.findAll();
     }
+
     public Optional<Category> getCategoryById(Long id){
         return categoryRepository.findById(id);
     }
-
 }

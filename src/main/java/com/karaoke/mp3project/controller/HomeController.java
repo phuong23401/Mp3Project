@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
-import java.sql.ResultSet;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -40,6 +39,7 @@ public class HomeController {
         List<Song> songs = songService.findAll();
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
+
     @GetMapping(value = "/top2mostlistened", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Song>> top10SongsNew() {
         List<Song> songList = songService.findAllByCreationTimeOrderByCreationTime();
@@ -138,6 +138,24 @@ public class HomeController {
     @GetMapping("/newlestCreatedPlaylist")
     public ResponseEntity<List<PlayList>> getNewlestCreated() {
         List<PlayList> playlists = playlistService.findAllByOrderByCreationTime();
+        if (playlists.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
+
+    @GetMapping("/topLikedPlaylist")
+    public ResponseEntity<List<PlayList>> getTopLiked() {
+        List<PlayList> playlists = playlistService.findAllOrderByNumberOfLike();
+        if (playlists.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<PlayList>> getAllPlaylist() {
+        List<PlayList> playlists = playlistService.findAll();
         if (playlists.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
