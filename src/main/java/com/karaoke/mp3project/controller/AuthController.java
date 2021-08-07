@@ -43,7 +43,6 @@ public class AuthController {
     @Autowired
     RoleRepo roleRepository;
 
-
     @Autowired
     PasswordEncoder encoder;
 
@@ -81,7 +80,6 @@ public class AuthController {
                     .badRequest()
                     .body(new MessageResponse("Email is existed!"));
         }
-//        String name, String email, String username, String password, String gender, String hobbies, String avatarUrl) {
         User users = new User();
         users.setName(signupRequest.getName());
         users.setUsername(signupRequest.getUsername());

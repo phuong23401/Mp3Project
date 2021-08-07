@@ -16,6 +16,8 @@ public interface ILikesongService {
     void deleteLikesong(Long id);
 
     void saveLikesong(LikeSong likesong);
+
     LikeSong save(LikeSong likeSong);
+
     List<LikeSong> findByUserContaining(String username);
 }

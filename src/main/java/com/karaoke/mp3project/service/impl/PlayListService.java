@@ -84,4 +84,9 @@ public class PlayListService implements IPlayListService {
         return songRepo.findSongByPlaylist(playList.get());
     }
 
+    @Override
+    public Iterable<Number> countSongInPlaylist(Long id) {
+        return playListRepo.countSongInPlaylist(id);
+    }
+
 }
