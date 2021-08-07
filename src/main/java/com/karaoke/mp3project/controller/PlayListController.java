@@ -1,10 +1,13 @@
 package com.karaoke.mp3project.controller;
 
 import com.karaoke.mp3project.dto.respon.MessageResponse;
+import com.karaoke.mp3project.model.LikeSong;
+import com.karaoke.mp3project.model.LikePlayList;
 import com.karaoke.mp3project.model.PlayList;
 import com.karaoke.mp3project.model.Song;
 import com.karaoke.mp3project.model.User;
 import com.karaoke.mp3project.security.userprincipal.UserDtService;
+import com.karaoke.mp3project.service.impl.LikePlayListService;
 import com.karaoke.mp3project.service.impl.PlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +27,9 @@ import java.util.Optional;
 public class PlayListController {
     @Autowired
     private PlayListService playlistService;
+
+    @Autowired
+    private LikePlayListService likePlayListService;
 
     @Autowired
     private UserDtService userDtService;
@@ -98,6 +104,13 @@ public class PlayListController {
     @GetMapping("/get/{id}")
     private ResponseEntity<Optional<PlayList>> getPlaylist(@PathVariable Long id){
         return new ResponseEntity<>(playlistService.findById(id), HttpStatus.OK) ;
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<MessageResponse> editPlaylist(@RequestBody PlayList playlist) {
+        playlistService.savePlaylist(playlist);
+        String message = "Cập nhật thông playlist thành công!";
+        return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
     }
 
 }
