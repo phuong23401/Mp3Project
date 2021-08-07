@@ -34,6 +34,7 @@ public class HomeController {
 
     @Autowired
     private LikePlayListService likePlayListService;
+
     @Autowired
     private ICommentSongService commentsongService;
 
@@ -42,6 +43,7 @@ public class HomeController {
         List<Song> songs = songService.findAll();
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
+
     @GetMapping(value = "/top2mostlistened", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Song>> top10SongsNew() {
         List<Song> songList = songService.findAllByCreationTimeOrderByCreationTime();
@@ -154,6 +156,7 @@ public class HomeController {
         }
         return new ResponseEntity<>(playlists, HttpStatus.OK);
     }
+
     @GetMapping("/getAll")
     public ResponseEntity<List<PlayList>> getAllPlaylist() {
         List<PlayList> playlists = playlistService.findAll();
@@ -163,12 +166,10 @@ public class HomeController {
         return new ResponseEntity<>(playlists, HttpStatus.OK);
     }
 
-
     @GetMapping("/comment-song/{id}")
     public ResponseEntity<Iterable<CommentSong>> getAllCommentBySong(@PathVariable("id") Long id){
         Song song = songService.findById(id);
         Iterable<CommentSong> comments = commentsongService.findAllBySong(song);
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
-
 }

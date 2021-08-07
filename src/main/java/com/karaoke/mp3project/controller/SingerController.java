@@ -75,4 +75,12 @@ public class SingerController {
         return new ResponseEntity<>(singer, HttpStatus.OK);
     }
 
+    @GetMapping("/getSingerBySongId/{id}")
+    public ResponseEntity<List<Singer>> getSingerBySongId(@PathVariable Long id) {
+        List<Singer> singerList = singerService.getSingerBySongId(id);
+        if (singerList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(singerList, HttpStatus.OK);
+    }
 }
