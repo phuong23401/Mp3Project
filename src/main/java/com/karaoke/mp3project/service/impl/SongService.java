@@ -60,6 +60,11 @@ public class SongService implements ISongService {
     }
 
     @Override
+    public Song findById(Long id) {
+        return songRepo.findById(id).orElse(null);
+    }
+
+    @Override
     public Optional<Song> findOne(Long id) {
         return songRepo.findById(id);
     }
