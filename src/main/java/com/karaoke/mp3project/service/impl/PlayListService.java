@@ -89,4 +89,9 @@ public class PlayListService implements IPlayListService {
         return playListRepo.countSongInPlaylist(id);
     }
 
+    @Override
+    public PlayList findOnePlayList(Long id) {
+        return playListRepo.findById(id).orElse(null);
+    }
+
 }
