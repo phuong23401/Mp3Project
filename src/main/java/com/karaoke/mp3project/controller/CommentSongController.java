@@ -14,6 +14,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Date;
+
+import java.sql.Timestamp;
+import java.util.TimeZone;
+
 @Controller
 @CrossOrigin("*")
 @RequestMapping("/comment-song")
@@ -26,6 +34,8 @@ public class CommentSongController {
     @PostMapping
     private ResponseEntity<MessageResponse> createCommentSong(@RequestBody CommentSong commentsong){
         User user = userDtService.getCurrentUser();
+        Timestamp createdTime = new Timestamp(System.currentTimeMillis());
+        commentsong.setCreatedTime(createdTime);
         commentsong.setUser(user);
         commentsongService.saveComment(commentsong);
         String message = "Success";
