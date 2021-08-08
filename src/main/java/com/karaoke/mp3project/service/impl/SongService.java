@@ -55,7 +55,7 @@ public class SongService implements ISongService {
     }
 
     @Override
-    public Iterable<Song> findAllByLike() {
+    public List<Song> findAllByLike() {
         return songRepo.findAllByOrderByCountLikeDesc();
     }
 

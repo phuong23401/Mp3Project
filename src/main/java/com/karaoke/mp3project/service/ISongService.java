@@ -22,7 +22,8 @@ public interface ISongService {
 
     Iterable<Song> findBySinger(Singer singer);
 
-    Iterable<Song> findAllByLike();
+    List<Song> findAllByLike();
+
     Song findById(Long id);
 
     List<Song> findSongByUser(Long id);
