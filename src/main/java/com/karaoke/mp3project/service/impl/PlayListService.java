@@ -6,6 +6,7 @@ import com.karaoke.mp3project.model.Song;
 import com.karaoke.mp3project.model.User;
 import com.karaoke.mp3project.repo.PlayListRepo;
 import com.karaoke.mp3project.repo.SongRepo;
+import com.karaoke.mp3project.security.userprincipal.UserDtService;
 import com.karaoke.mp3project.service.IPlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,10 @@ import java.util.Optional;
 
 @Service
 public class PlayListService implements IPlayListService {
-
+    @Autowired
+    private SongService songService;
+    @Autowired
+    private UserDtService userDtService;
     @Autowired
     private SongRepo songRepo;
 
@@ -88,5 +92,7 @@ public class PlayListService implements IPlayListService {
     public Iterable<Number> countSongInPlaylist(Long id) {
         return playListRepo.countSongInPlaylist(id);
     }
+
+
 
 }

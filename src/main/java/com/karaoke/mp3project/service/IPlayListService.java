@@ -36,4 +36,5 @@ public interface IPlayListService {
     List<Song> findAllSongInPlaylist(Long id);
 
     Iterable<Number> countSongInPlaylist(Long id);
+
 }
