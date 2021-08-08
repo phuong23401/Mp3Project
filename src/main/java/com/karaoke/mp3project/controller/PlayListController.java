@@ -1,11 +1,11 @@
 package com.karaoke.mp3project.controller;
 
 import com.karaoke.mp3project.dto.respon.MessageResponse;
-import com.karaoke.mp3project.model.PlayList;
-import com.karaoke.mp3project.model.Song;
-import com.karaoke.mp3project.model.User;
+import com.karaoke.mp3project.model.*;
 import com.karaoke.mp3project.security.userprincipal.UserDtService;
+import com.karaoke.mp3project.service.impl.LikePlayListService;
 import com.karaoke.mp3project.service.impl.PlayListService;
+import com.karaoke.mp3project.service.impl.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,13 @@ public class PlayListController {
     private PlayListService playlistService;
 
     @Autowired
+    private LikePlayListService likePlayListService;
+
+    @Autowired
     private UserDtService userDtService;
+
+    @Autowired
+    private SongService songService;
 
 
     @PostMapping("/create")
@@ -101,6 +107,22 @@ public class PlayListController {
     @GetMapping("/get/{id}")
     private ResponseEntity<Optional<PlayList>> getPlaylist(@PathVariable Long id){
         return new ResponseEntity<>(playlistService.findById(id), HttpStatus.OK) ;
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<MessageResponse> editPlaylist(@RequestBody PlayList playlist) {
+        playlistService.savePlaylist(playlist);
+        String message = "Cập nhật thông playlist thành công!";
+        return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
+    }
+
+    @PutMapping("/addsong")
+    public ResponseEntity<MessageResponse> addSongToPlaylist(@RequestBody AddSongToPlaylistReq addSongToPlaylistReq) {
+        Song song = songService.findById(Long.parseLong(addSongToPlaylistReq.getIdSong()));
+        Optional<PlayList> playList =playlistService.findOne(Long.parseLong(addSongToPlaylistReq.getIdPlaylist()));
+        playlistService.addSongToPlaylist(song,playList.get());
+        String message = "Cập nhật thông playlist thành công!";
+        return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
     }
 
 }

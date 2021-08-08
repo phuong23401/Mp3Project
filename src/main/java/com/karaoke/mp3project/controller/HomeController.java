@@ -3,6 +3,7 @@ package com.karaoke.mp3project.controller;
 import com.karaoke.mp3project.dto.respon.MessageResponse;
 import com.karaoke.mp3project.model.*;
 import com.karaoke.mp3project.security.userprincipal.UserDtService;
+import com.karaoke.mp3project.service.ICommentPlayListService;
 import com.karaoke.mp3project.service.ICommentSongService;
 import com.karaoke.mp3project.service.impl.*;
 import com.karaoke.mp3project.security.userprincipal.UserDtService;
@@ -37,6 +38,11 @@ public class HomeController {
 
     @Autowired
     private ICommentSongService commentsongService;
+
+    @Autowired
+    ICommentPlayListService commentPlayListService;
+    @Autowired
+    private PlayListService playListService;
 
     @GetMapping("/new")
     public ResponseEntity<Iterable<Song>> getAllSongNew() {
@@ -90,6 +96,7 @@ public class HomeController {
         }
     }
 
+
     @GetMapping("/countLikedPlaylist/{id}")
     public ResponseEntity<?> countLikedPlaylist(@PathVariable Long id) {
         try {
@@ -99,7 +106,7 @@ public class HomeController {
             if (likePlayLists.size() != 0){
                 for (int i = 0; i < likePlayLists.size(); i++) {
                     if (likePlayLists.get(i).getPlaylist().equals(playList.getName())){
-                        likeSongService.deleteLikesong(likePlayLists.get(i).getId());
+                        likePlayListService.deleteLikeplaylist(likePlayLists.get(i).getId());
                         playList.setCountLike(playList.getCountLike() -1);
                         playlistService.savePlaylist(playList);
                         return  new ResponseEntity<>(playList,HttpStatus.OK);
@@ -172,4 +179,16 @@ public class HomeController {
         Iterable<CommentSong> comments = commentsongService.findAllBySong(song);
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
+    @GetMapping("/comment-play-list/{id}")
+    public ResponseEntity<Iterable<CommentPlayList>> getAllCommentByPlaylist(@PathVariable("id") Long id){
+        PlayList playlist = playlistService.findOnePlayList(id);
+        Iterable<CommentPlayList> comments = commentPlayListService.findAllByPlaylist(playlist);
+        return new ResponseEntity<>(comments, HttpStatus.OK);
+    }
+    @GetMapping("/playlist/{id}")
+    public ResponseEntity<PlayList> getPlaylistById(@PathVariable("id") Long id) {
+        PlayList playlist = playlistService.findOnePlayList(id);
+        return new ResponseEntity<>(playlist, HttpStatus.OK);
+    }
+
 }

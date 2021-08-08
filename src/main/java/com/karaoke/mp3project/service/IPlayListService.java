@@ -2,6 +2,7 @@ package com.karaoke.mp3project.service;
 
 
 
+import com.karaoke.mp3project.model.AddSongToPlaylistReq;
 import com.karaoke.mp3project.model.PlayList;
 import com.karaoke.mp3project.model.Song;
 import com.karaoke.mp3project.model.User;
@@ -36,5 +37,7 @@ public interface IPlayListService {
     List<Song> findAllSongInPlaylist(Long id);
 
     Iterable<Number> countSongInPlaylist(Long id);
+    PlayList findOnePlayList(Long id);
 
+    void addSongToPlaylist(Song song, PlayList playList);
 }
