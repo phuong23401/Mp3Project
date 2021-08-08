@@ -30,7 +30,7 @@ public interface SongRepo extends JpaRepository<Song, Long> {
 
 
 
-    Iterable<Song> findAllByOrderByCountLikeDesc();
+    List<Song> findAllByOrderByCountLikeDesc();
     @Query(value = "select * from song where song.name like ?", nativeQuery = true)
     List<Song> findAllByNameSong(String nameSong);
 //2 luot nghe nhieu nhat
