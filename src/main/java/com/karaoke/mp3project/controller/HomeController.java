@@ -41,6 +41,8 @@ public class HomeController {
 
     @Autowired
     ICommentPlayListService commentPlayListService;
+    @Autowired
+    private PlayListService playListService;
 
     @GetMapping("/new")
     public ResponseEntity<Iterable<Song>> getAllSongNew() {
@@ -94,6 +96,7 @@ public class HomeController {
         }
     }
 
+
     @GetMapping("/countLikedPlaylist/{id}")
     public ResponseEntity<?> countLikedPlaylist(@PathVariable Long id) {
         try {
@@ -103,7 +106,7 @@ public class HomeController {
             if (likePlayLists.size() != 0){
                 for (int i = 0; i < likePlayLists.size(); i++) {
                     if (likePlayLists.get(i).getPlaylist().equals(playList.getName())){
-                        likeSongService.deleteLikesong(likePlayLists.get(i).getId());
+                        likePlayListService.deleteLikeplaylist(likePlayLists.get(i).getId());
                         playList.setCountLike(playList.getCountLike() -1);
                         playlistService.savePlaylist(playList);
                         return  new ResponseEntity<>(playList,HttpStatus.OK);
@@ -181,6 +184,11 @@ public class HomeController {
         PlayList playlist = playlistService.findOnePlayList(id);
         Iterable<CommentPlayList> comments = commentPlayListService.findAllByPlaylist(playlist);
         return new ResponseEntity<>(comments, HttpStatus.OK);
+    }
+    @GetMapping("/playlist/{id}")
+    public ResponseEntity<PlayList> getPlaylistById(@PathVariable("id") Long id) {
+        PlayList playlist = playlistService.findOnePlayList(id);
+        return new ResponseEntity<>(playlist, HttpStatus.OK);
     }
 
 }

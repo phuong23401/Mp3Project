@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public class LikePlayList {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private boolean status = false;
