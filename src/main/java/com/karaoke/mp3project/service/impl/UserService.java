@@ -43,4 +43,25 @@ public class UserService implements IUserService {
     public boolean checkPassword(User user, String password) {
         return passwordEncoder.matches(password, user.getPassword());
     }
+    @Override
+    public User findByVerificationCode(String code) {
+        return userRepo.findByVerificationCode(code);
+    }
+
+    @Override
+    public Boolean verify(String code) {
+        User user = findByVerificationCode(code);
+        if(user!=null){
+            user.setVerifyEmail(true);
+//            user.setAccountStatus(true);
+            userRepo.save(user);
+            return true;
+        }else
+            return false;
+    }
+
+    @Override
+    public Boolean check(User user) {
+        return user.getVerifyEmail();
+    }
 }
