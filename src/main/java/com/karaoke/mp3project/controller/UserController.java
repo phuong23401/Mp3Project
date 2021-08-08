@@ -87,7 +87,6 @@ public class UserController {
         userCurrentUpdate.setHobbies(userCurrent.getHobbies());
         userCurrentUpdate.setAvatarUrl(userCurrent.getAvatarUrl());
 
-        System.out.println(userCurrent);
         return new ResponseEntity<>(userCurrentUpdate, HttpStatus.OK);
     }
 }

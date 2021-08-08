@@ -24,7 +24,6 @@ public class JwtUtils {
 
     public String generateJwtToken(Authentication authentication){
         UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
-        System.out.println("usẻPrincipal == "+userPrincipal);
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
@@ -36,7 +35,6 @@ public class JwtUtils {
     public String getUserNameFromJwtToken(String token) {
 
          String userName = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
-        System.out.println("userName ="+userName);
         return userName;
     }
 
