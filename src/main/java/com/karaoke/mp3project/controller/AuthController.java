@@ -94,32 +94,12 @@ public class AuthController {
                     .badRequest()
                     .body(new MessageResponse("Username is existed !"));
         }
-
         if(userRepo.existsUsersByEmail(signupRequest.getEmail())){
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Email is existed!"));
         }
-        User users = new User();
-        users.setName(signupRequest.getName());
-        users.setUsername(signupRequest.getUsername());
-        users.setEmail(signupRequest.getEmail());
-        users.setPassword(encoder.encode(signupRequest.getPassword()));
-        users.setVerificationCode(RandomString.make(64));
-        users.setAvatarUrl("https://cdn3.vectorstock.com/i/1000x1000/26/62/runner-avatar-figure-with-mp3-player-music-block-vector-32312662.jpg");
-
-        Set<String> strRoles = signupRequest.getRoles();
-        Set<Role> roles = new HashSet<>();
-        if(strRoles == null){
-            Role userRole = roleRepository.findRoleByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            Role adminRole = roleRepository.findRoleByName(ERole.ROLE_ADMIN)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(adminRole);
-        }
-        users.setRole(roles);
+        User users = userService.createNewUser(signupRequest);
         userRepo.save(users);
         try {
             emailSender.send(users, siteUrl);

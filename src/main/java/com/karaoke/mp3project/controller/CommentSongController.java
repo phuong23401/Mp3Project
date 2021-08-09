@@ -38,24 +38,16 @@ public class CommentSongController {
     private  UserDtService userDtService;
 
     @PostMapping
-    private ResponseEntity<MessageResponse> createCommentSong(@RequestBody CommentSong commentsong){
+    private ResponseEntity<MessageResponse> createCommentSong(@RequestBody CommentSong commentSong){
         User user = userDtService.getCurrentUser();
-        Timestamp createdTime = new Timestamp(System.currentTimeMillis());
-
-        commentsong.setCreatedTime(createdTime);
-        commentsong.setUser(user);
-        commentsongService.saveComment(commentsong);
+        commentsongService.cmtSong(commentSong, user);
         String message = "Success";
         return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
     }
 
     @PostMapping("/playlist")
     private ResponseEntity<MessageResponse> createCommentPlaylist(@RequestBody CommentPlayList commentPlayList){
-        User user = userDtService.getCurrentUser();
-        Timestamp createdTime = new Timestamp(System.currentTimeMillis());
-        commentPlayList.setCreatedTime(createdTime);
-        commentPlayList.setUser(user);
-        commentPlayListService.saveCommentplaylist(commentPlayList);
+        commentPlayListService.cmtPlaylist(commentPlayList);
         String message = "Success";
         return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
     }

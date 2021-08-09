@@ -1,6 +1,7 @@
 package com.karaoke.mp3project.service;
 
 
+import com.karaoke.mp3project.model.CommentPlayList;
 import com.karaoke.mp3project.model.LikePlayList;
 import com.karaoke.mp3project.model.PlayList;
 
@@ -20,4 +21,7 @@ public interface ILikePlayListService {
     LikePlayList save(LikePlayList likePlayList);
 
     List<LikePlayList> findByUserContaining(String username);
+
+
+
 }

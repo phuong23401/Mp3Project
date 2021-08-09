@@ -1,5 +1,6 @@
 package com.karaoke.mp3project.service;
 
+import com.karaoke.mp3project.dto.request.SignupRequest;
 import com.karaoke.mp3project.model.User;
 
 import java.util.ArrayList;
@@ -20,4 +21,7 @@ public interface IUserService {
     Boolean verify(String code);
 
     Boolean check(User user);
+
+    User createNewUser(SignupRequest signupRequest);
+
 }
