@@ -199,5 +199,14 @@ public class HomeController {
         PlayList playlist = playlistService.findOnePlayList(id);
         return new ResponseEntity<>(playlist, HttpStatus.OK);
     }
+    @GetMapping("/getallsong/{id}")
+    public ResponseEntity<Iterable<Song>> getAllSongInPlaylist(@PathVariable Long id) {
+        Iterable<Song> songList = playlistService.findAllSongInPlaylist(id);
+        return new ResponseEntity<>(songList, HttpStatus.OK);
+    }
+    @GetMapping("/get/{id}")
+    private ResponseEntity<Optional<PlayList>> getPlaylist(@PathVariable Long id){
+        return new ResponseEntity<>(playlistService.findById(id), HttpStatus.OK) ;
+    }
 
 }
