@@ -18,6 +18,7 @@ import com.karaoke.mp3project.service.IUtility;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -85,7 +86,7 @@ public class AuthController {
         ));
     }
 
-    @PostMapping("/signup")
+    @PostMapping(value = "/signup",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MessageResponse> responseEntity(@Valid @RequestBody SignupRequest signupRequest, HttpServletRequest request){
         String siteUrl = utility.getSiteURL(request);
         if (userRepo.existsUsersByUsername(signupRequest.getUsername())){

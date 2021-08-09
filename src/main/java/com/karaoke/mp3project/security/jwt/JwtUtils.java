@@ -16,11 +16,10 @@ public class JwtUtils {
 
     @Value("${bezkoder.app.jwtSecret}")
     private String jwtSecret;
-//
+
     @Value("${bezkoder.app.jwtExpirationMs}")
     private int jwtExpirationMs;
-//    private String jwtSecret = "chinh.nguyen@codegym.vn";
-//    private int jwtExprationMs = 86400;
+
 
     public String generateJwtToken(Authentication authentication){
         UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
