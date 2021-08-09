@@ -15,6 +15,7 @@ import java.util.List;
 public interface PlayListRepo extends JpaRepository<PlayList, Long> {
     List<PlayList> findAllByUser(User user);
 
+
     Iterable<PlayList> findAllByNameContaining(String name);
 
     @Query(value = "select * from `play_list` where `play_list`.`name` like ?", nativeQuery = true)
@@ -34,4 +35,7 @@ public interface PlayListRepo extends JpaRepository<PlayList, Long> {
 
     @Query(value = "select count(`song`.id) from song where song.id in (select `song_id` from `playlist_song` where `playlist_song`.`playlist_id` = ?)", nativeQuery = true)
     Iterable<Number> countSongInPlaylist(Long id);
+
+    @Query(value ="delete from `playlist_song` where 'song_id' = ?", nativeQuery = true)
+    void deleteSongInThePlaylist(Long id);
 }

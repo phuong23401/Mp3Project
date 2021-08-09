@@ -12,6 +12,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -39,12 +40,12 @@ public class PlayList {
             joinColumns = {@JoinColumn(name = "playlist_id")},
             inverseJoinColumns = {@JoinColumn(name = "song_id")})
     @JsonIgnoreProperties("playlists")
-    private Set<Song> songs;
+    private List<Song> songs;
 
     public PlayList() {
     }
 
-    public PlayList(Long id, String name, String avatarUrl, Long countLike, Long listen, Set<Song> songs) {
+    public PlayList(Long id, String name, String avatarUrl, Long countLike, Long listen, List<Song> songs) {
         this.id = id;
         this.name = name;
         this.avatarUrl = avatarUrl;
@@ -128,11 +129,11 @@ public class PlayList {
         this.user = user;
     }
 
-    public Set<Song> getSongs() {
+    public List<Song> getSongs() {
         return songs;
     }
 
-    public void setSongs(Set<Song> songs) {
+    public void setSongs(List<Song> songs) {
         this.songs = songs;
     }
 }

@@ -12,6 +12,10 @@ import com.karaoke.mp3project.repo.RoleRepo;
 import com.karaoke.mp3project.repo.UserRepo;
 import com.karaoke.mp3project.security.jwt.JwtUtils;
 import com.karaoke.mp3project.security.userprincipal.UserDetails;
+import com.karaoke.mp3project.service.IEmailSender;
+import com.karaoke.mp3project.service.IUserService;
+import com.karaoke.mp3project.service.IUtility;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +27,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -49,6 +56,15 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Autowired
+    IUtility utility;
+
+    @Autowired
+    IEmailSender emailSender;
+
+    @Autowired
+    IUserService userService;
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
@@ -59,7 +75,10 @@ public class AuthController {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
-
+        if(!userService.check(userService.findByUsername(userDetails.getUsername()))){
+            return ResponseEntity.badRequest().body(new MessageResponse(
+                    "unverified account"));
+        }
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername()
@@ -67,8 +86,8 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<MessageResponse> responseEntity(@Valid @RequestBody SignupRequest signupRequest){
-        System.out.println(signupRequest);
+    public ResponseEntity<MessageResponse> responseEntity(@Valid @RequestBody SignupRequest signupRequest, HttpServletRequest request){
+        String siteUrl = utility.getSiteURL(request);
         if (userRepo.existsUsersByUsername(signupRequest.getUsername())){
             return ResponseEntity
                     .badRequest()
@@ -85,10 +104,7 @@ public class AuthController {
         users.setUsername(signupRequest.getUsername());
         users.setEmail(signupRequest.getEmail());
         users.setPassword(encoder.encode(signupRequest.getPassword()));
-
-        System.out.println(signupRequest.getPassword());
-        System.out.println(users.getPassword());
-
+        users.setVerificationCode(RandomString.make(64));
         users.setAvatarUrl("https://cdn3.vectorstock.com/i/1000x1000/26/62/runner-avatar-figure-with-mp3-player-music-block-vector-32312662.jpg");
 
         Set<String> strRoles = signupRequest.getRoles();
@@ -104,6 +120,13 @@ public class AuthController {
         }
         users.setRole(roles);
         userRepo.save(users);
-        return new  ResponseEntity<>(new MessageResponse("REGISTER SUCCESSFULLY"), HttpStatus.OK);
+        try {
+            emailSender.send(users, siteUrl);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        return new  ResponseEntity<>(new MessageResponse("Register successfully"), HttpStatus.OK);
     }
 }

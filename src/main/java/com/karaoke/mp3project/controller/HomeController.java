@@ -97,6 +97,14 @@ public class HomeController {
         }
     }
 
+    @GetMapping("/topLikeSong")
+    public ResponseEntity<List<Song>> getTopLikeSong() {
+        List<Song> songList = songService.findAllByLike();
+        if (songList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(songList, HttpStatus.OK);
+    }
 
     @GetMapping("/countLikedPlaylist/{id}")
     public ResponseEntity<?> countLikedPlaylist(@PathVariable Long id) {

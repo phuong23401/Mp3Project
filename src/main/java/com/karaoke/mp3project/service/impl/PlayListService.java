@@ -1,6 +1,7 @@
 package com.karaoke.mp3project.service.impl;
 
 
+import com.karaoke.mp3project.model.AddSongToPlaylistReq;
 import com.karaoke.mp3project.model.PlayList;
 import com.karaoke.mp3project.model.Song;
 import com.karaoke.mp3project.model.User;
@@ -94,4 +95,11 @@ public class PlayListService implements IPlayListService {
         return playListRepo.findById(id).orElse(null);
     }
 
+    @Override
+    public void addSongToPlaylist(Song song, PlayList playList) {
+        List<Song> songs = playList.getSongs();
+        songs.add(song);
+        playList.setSongs(songs);
+        playListRepo.save(playList);
+    }
 }
