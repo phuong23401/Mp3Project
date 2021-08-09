@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RequestMapping("home")
@@ -180,6 +181,14 @@ public class HomeController {
         }
         return new ResponseEntity<>(playlists, HttpStatus.OK);
     }
+    @GetMapping("/songs/{id}")
+    public ResponseEntity<?> getsongById(@PathVariable Long id) {
+        Optional<Song> song = songService.findOne(id);
+        if (!song.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(song, HttpStatus.OK);
+    }
 
     @GetMapping("/comment-song/{id}")
     public ResponseEntity<Iterable<CommentSong>> getAllCommentBySong(@PathVariable("id") Long id){
@@ -197,6 +206,15 @@ public class HomeController {
     public ResponseEntity<PlayList> getPlaylistById(@PathVariable("id") Long id) {
         PlayList playlist = playlistService.findOnePlayList(id);
         return new ResponseEntity<>(playlist, HttpStatus.OK);
+    }
+    @GetMapping("/getallsong/{id}")
+    public ResponseEntity<Iterable<Song>> getAllSongInPlaylist(@PathVariable Long id) {
+        Iterable<Song> songList = playlistService.findAllSongInPlaylist(id);
+        return new ResponseEntity<>(songList, HttpStatus.OK);
+    }
+    @GetMapping("/get/{id}")
+    private ResponseEntity<Optional<PlayList>> getPlaylist(@PathVariable Long id){
+        return new ResponseEntity<>(playlistService.findById(id), HttpStatus.OK) ;
     }
 
 }
