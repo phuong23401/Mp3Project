@@ -40,4 +40,6 @@ public interface IPlayListService {
     PlayList findOnePlayList(Long id);
 
     void addSongToPlaylist(Song song, PlayList playList);
+
+    void editPlaylist(Long id, PlayList newPlaylist);
 }

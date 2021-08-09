@@ -47,16 +47,7 @@ public class SongController {
         if (song.getFileUrl() == null || song.getFileUrl().trim().isEmpty()) {
             return new ResponseEntity<>(new MessageResponse("nomp3url"), HttpStatus.OK);
         }
-        Timestamp createdTime = new Timestamp(System.currentTimeMillis());
-        Timestamp upDateTime = new Timestamp(System.currentTimeMillis());
-        User user = userDtService.getCurrentUser();
-        Long viewnumber = Long.valueOf(0);
-        song.setCreatedTime(createdTime);
-        song.setUpdatedTime(upDateTime);
-        song.setNumberOfView(viewnumber);
-        song.setUser(user);
-        song.setCountLike(0L);
-        songService.saveSong(song);
+        songService.addSong(song);
         return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
     }
 
@@ -88,14 +79,7 @@ public class SongController {
 //            if (newSong.getFileUrl() == null || newSong.getFileUrl().trim().isEmpty()) {
 //                return new ResponseEntity<>(new MessageResponse("nomp3url"), HttpStatus.OK);
 //            }
-            User user = userDtService.getCurrentUser();
-            newSong.setUser(user);
-            Timestamp createdTime = new Timestamp(System.currentTimeMillis());
-            Timestamp upDateTime = new Timestamp(System.currentTimeMillis());
-            newSong.setCreatedTime(createdTime);
-            newSong.setUpdatedTime(upDateTime);
-            newSong.setId(id);
-            songService.saveSong(newSong);
+            songService.editSong(id, newSong);
             return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
         }
     }
