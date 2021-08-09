@@ -78,7 +78,7 @@ public class AuthController {
                 .collect(Collectors.toList());
         if(!userService.check(userService.findByUsername(userDetails.getUsername()))){
             return ResponseEntity.badRequest().body(new MessageResponse(
-                    "unverified account"));
+                    "Unverified Account"));
         }
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),

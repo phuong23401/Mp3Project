@@ -15,8 +15,8 @@ public class EmailController {
     public String verify(@PathVariable String code){
         boolean verifed = userService.verify(code);
         if(verifed){
-            return "Verify Success";
+            return "Verify Success!";
         }
-        return "Can Not Verify";
+        return "Can Not Verify !!!";
     }
 }

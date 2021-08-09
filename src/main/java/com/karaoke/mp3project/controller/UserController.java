@@ -41,8 +41,6 @@ public class UserController {
     @PutMapping("/changeinfor")
     public ResponseEntity<MessageResponse> changeInforMations(@RequestBody UserCurrentUpdate userCurrentUpdate){
         User userCurrent = userDtService.getCurrentUser();
-        System.out.println("user hien tai");
-        System.out.println(userCurrent.toString());
         String message;
         if(userCurrent != null){
             userCurrent.setAvatarUrl(userCurrentUpdate.getAvatarUrl());
@@ -81,12 +79,10 @@ public class UserController {
     public ResponseEntity<UserCurrentUpdate> getUserByToken() {
         User userCurrent = userDtService.getCurrentUser();
         UserCurrentUpdate userCurrentUpdate = new UserCurrentUpdate();
-
         userCurrentUpdate.setName(userCurrent.getName());
         userCurrentUpdate.setGender(userCurrent.getGender());
         userCurrentUpdate.setHobbies(userCurrent.getHobbies());
         userCurrentUpdate.setAvatarUrl(userCurrent.getAvatarUrl());
-
         return new ResponseEntity<>(userCurrentUpdate, HttpStatus.OK);
     }
 }

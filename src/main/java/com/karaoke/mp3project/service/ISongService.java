@@ -48,6 +48,9 @@ public interface ISongService {
 
     Iterable<Song> findAllByUserContaining(String user);
 
+    void addSong(Song song);
+
+    void editSong(Long id, Song newSong);
 
 
 }

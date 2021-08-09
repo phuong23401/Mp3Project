@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -82,6 +83,30 @@ public class SongService implements ISongService {
     @Override
     public void saveSong(Song song) {
         songRepo.save(song);
+    }
+
+    public void addSong(Song song){
+        User user = userDtService.getCurrentUser();
+        Timestamp createdTime = new Timestamp(System.currentTimeMillis());
+        Timestamp upDateTime = new Timestamp(System.currentTimeMillis());
+        Long viewnumber = Long.valueOf(0);
+        song.setCreatedTime(createdTime);
+        song.setUpdatedTime(upDateTime);
+        song.setNumberOfView(viewnumber);
+        song.setUser(user);
+        song.setCountLike(0L);
+        songRepo.save(song);
+    }
+    @Override
+    public void editSong(Long id, Song newSong){
+        User user = userDtService.getCurrentUser();
+        newSong.setUser(user);
+        Timestamp createdTime = new Timestamp(System.currentTimeMillis());
+        Timestamp upDateTime = new Timestamp(System.currentTimeMillis());
+        newSong.setCreatedTime(createdTime);
+        newSong.setUpdatedTime(upDateTime);
+        newSong.setId(id);
+        songRepo.save(newSong);
     }
 
     @Override

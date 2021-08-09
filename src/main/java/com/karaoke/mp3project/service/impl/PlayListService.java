@@ -7,10 +7,12 @@ import com.karaoke.mp3project.model.Song;
 import com.karaoke.mp3project.model.User;
 import com.karaoke.mp3project.repo.PlayListRepo;
 import com.karaoke.mp3project.repo.SongRepo;
+import com.karaoke.mp3project.security.userprincipal.UserDtService;
 import com.karaoke.mp3project.service.IPlayListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +46,9 @@ public class PlayListService implements IPlayListService {
         return playListRepo.findById(id);
     }
 
+    @Autowired
+    private UserDtService userDtService;
+
     @Override
     public void deletePlaylist(Long id) {
         playListRepo.deleteById(id);
@@ -51,7 +56,28 @@ public class PlayListService implements IPlayListService {
 
     @Override
     public void savePlaylist(PlayList playlist) {
+        User userCurrent = userDtService.getCurrentUser();
+        Timestamp createdTime = new Timestamp(System.currentTimeMillis());
+        Timestamp updatedTime = new Timestamp(System.currentTimeMillis());
+        Long listenNum = Long.valueOf(0);
+        playlist.setCreatedTime(createdTime);
+        playlist.setUpdatedTime(updatedTime);
+        playlist.setListen(listenNum);
+        playlist.setUser(userCurrent);
         playListRepo.save(playlist);
+    }
+    @Override
+    public void editPlaylist(Long id, PlayList newPlaylist){
+        User user = userDtService.getCurrentUser();
+        Timestamp createdTime = new Timestamp(System.currentTimeMillis());
+        Timestamp updatedTime = new Timestamp(System.currentTimeMillis());
+        Long listenNum = Long.valueOf(0);
+        newPlaylist.setCreatedTime(createdTime);
+        newPlaylist.setUpdatedTime(updatedTime);
+        newPlaylist.setListen(listenNum);
+        newPlaylist.setId(id);
+        newPlaylist.setUser(user);
+        playListRepo.save(newPlaylist);
     }
 
     @Override
