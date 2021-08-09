@@ -176,14 +176,7 @@ public class SongController {
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
 
-    @GetMapping("/songs/{id}")
-    public ResponseEntity<?> getsongById(@PathVariable Long id) {
-        Optional<Song> song = songService.findOne(id);
-        if (!song.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(song, HttpStatus.OK);
-    }
+
 
     @GetMapping("/search-param")
     //singer,String user,String author,String name

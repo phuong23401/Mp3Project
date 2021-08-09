@@ -53,7 +53,6 @@ public class CommentSongController {
     private ResponseEntity<MessageResponse> createCommentPlaylist(@RequestBody CommentPlayList commentPlayList){
         User user = userDtService.getCurrentUser();
         Timestamp createdTime = new Timestamp(System.currentTimeMillis());
-
         commentPlayList.setCreatedTime(createdTime);
         commentPlayList.setUser(user);
         commentPlayListService.saveCommentplaylist(commentPlayList);
