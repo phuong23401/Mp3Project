@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RequestMapping("home")
@@ -171,6 +172,14 @@ public class HomeController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(playlists, HttpStatus.OK);
+    }
+    @GetMapping("/songs/{id}")
+    public ResponseEntity<?> getsongById(@PathVariable Long id) {
+        Optional<Song> song = songService.findOne(id);
+        if (!song.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(song, HttpStatus.OK);
     }
 
     @GetMapping("/comment-song/{id}")
