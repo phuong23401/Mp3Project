@@ -53,7 +53,6 @@ public class UserService implements IUserService {
         User user = findByVerificationCode(code);
         if(user!=null){
             user.setVerifyEmail(true);
-//            user.setAccountStatus(true);
             userRepo.save(user);
             return true;
         }else
