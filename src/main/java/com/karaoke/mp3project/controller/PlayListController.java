@@ -47,12 +47,14 @@ public class PlayListController {
     @PutMapping("/{id}")
     public ResponseEntity<?> editPlaylist(@PathVariable Long id, @Valid @RequestBody PlayList newPlaylist) {
         Optional<PlayList> playList = playlistService.findOne(id);
+        User user = userDtService.getCurrentUser();
         if (!playList.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             if (newPlaylist.getAvatarUrl() == null || newPlaylist.getAvatarUrl().trim().isEmpty()) {
                 return new ResponseEntity<>(new MessageResponse("Novatar"), HttpStatus.OK);
             }
+            newPlaylist.setUser(user);
             playlistService.editPlaylist(id, newPlaylist);
             return new ResponseEntity<>(new MessageResponse("Successfully"), HttpStatus.OK);
         }
