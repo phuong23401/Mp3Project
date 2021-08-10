@@ -48,10 +48,10 @@ public class UserController {
             userCurrent.setHobbies(userCurrentUpdate.getHobbies());
             userCurrent.setName(userCurrentUpdate.getName());
             userService.updateUser(userCurrent);
-            message = "Update Profile Success Fully !";
+            message = "Update profile success fully !";
             return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
         }else {
-            message = "Update Profile Failed";
+            message = "Update profile failed";
         }
         return ResponseEntity
                 .badRequest()
@@ -65,10 +65,10 @@ public class UserController {
         if(userService.checkPassword(userCurrent, password.getPassword())){
             userCurrent.setPassword(passwordEncoder.encode(password.getNewPassword()));
             userService.updateUser(userCurrent);
-            message = "Change Password Success Fully  !";
+            message = "Change password success fully !";
             return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
         }else {
-            message = "Change Password Failed";
+            message = "Change password failed";
         }
         return ResponseEntity
                 .badRequest()
