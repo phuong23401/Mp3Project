@@ -47,16 +47,7 @@ public class SongController {
         if (song.getFileUrl() == null || song.getFileUrl().trim().isEmpty()) {
             return new ResponseEntity<>(new MessageResponse("nomp3url"), HttpStatus.OK);
         }
-        Timestamp createdTime = new Timestamp(System.currentTimeMillis());
-        Timestamp upDateTime = new Timestamp(System.currentTimeMillis());
-        User user = userDtService.getCurrentUser();
-        Long viewnumber = Long.valueOf(0);
-        song.setCreatedTime(createdTime);
-        song.setUpdatedTime(upDateTime);
-        song.setNumberOfView(viewnumber);
-        song.setUser(user);
-        song.setCountLike(0L);
-        songService.saveSong(song);
+        songService.addSong(song);
         return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
     }
 
@@ -88,14 +79,7 @@ public class SongController {
 //            if (newSong.getFileUrl() == null || newSong.getFileUrl().trim().isEmpty()) {
 //                return new ResponseEntity<>(new MessageResponse("nomp3url"), HttpStatus.OK);
 //            }
-            User user = userDtService.getCurrentUser();
-            newSong.setUser(user);
-            Timestamp createdTime = new Timestamp(System.currentTimeMillis());
-            Timestamp upDateTime = new Timestamp(System.currentTimeMillis());
-            newSong.setCreatedTime(createdTime);
-            newSong.setUpdatedTime(upDateTime);
-            newSong.setId(id);
-            songService.saveSong(newSong);
+            songService.editSong(id, newSong);
             return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
         }
     }
@@ -176,14 +160,7 @@ public class SongController {
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
 
-    @GetMapping("/songs/{id}")
-    public ResponseEntity<?> getsongById(@PathVariable Long id) {
-        Optional<Song> song = songService.findOne(id);
-        if (!song.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(song, HttpStatus.OK);
-    }
+
 
     @GetMapping("/search-param")
     //singer,String user,String author,String name

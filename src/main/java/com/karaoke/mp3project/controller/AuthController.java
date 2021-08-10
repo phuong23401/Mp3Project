@@ -12,8 +12,13 @@ import com.karaoke.mp3project.repo.RoleRepo;
 import com.karaoke.mp3project.repo.UserRepo;
 import com.karaoke.mp3project.security.jwt.JwtUtils;
 import com.karaoke.mp3project.security.userprincipal.UserDetails;
+import com.karaoke.mp3project.service.IEmailSender;
+import com.karaoke.mp3project.service.IUserService;
+import com.karaoke.mp3project.service.IUtility;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +28,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -43,12 +51,20 @@ public class AuthController {
     @Autowired
     RoleRepo roleRepository;
 
-
     @Autowired
     PasswordEncoder encoder;
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @Autowired
+    IUtility utility;
+
+    @Autowired
+    IEmailSender emailSender;
+
+    @Autowired
+    IUserService userService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -60,52 +76,38 @@ public class AuthController {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
-
+        if(!userService.check(userService.findByUsername(userDetails.getUsername()))){
+            return ResponseEntity.badRequest().body(new MessageResponse(
+                    "Unverified account"));
+        }
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername()
         ));
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<MessageResponse> responseEntity(@Valid @RequestBody SignupRequest signupRequest){
-        System.out.println(signupRequest);
+    @PostMapping(value = "/signup",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MessageResponse> responseEntity(@Valid @RequestBody SignupRequest signupRequest, HttpServletRequest request){
+        String siteUrl = utility.getSiteURL(request);
         if (userRepo.existsUsersByUsername(signupRequest.getUsername())){
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Username is existed !"));
         }
-
         if(userRepo.existsUsersByEmail(signupRequest.getEmail())){
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Email is existed!"));
         }
-//        String name, String email, String username, String password, String gender, String hobbies, String avatarUrl) {
-        User users = new User();
-        users.setName(signupRequest.getName());
-        users.setUsername(signupRequest.getUsername());
-        users.setEmail(signupRequest.getEmail());
-        users.setPassword(encoder.encode(signupRequest.getPassword()));
-
-        System.out.println(signupRequest.getPassword());
-        System.out.println(users.getPassword());
-
-        users.setAvatarUrl("https://cdn3.vectorstock.com/i/1000x1000/26/62/runner-avatar-figure-with-mp3-player-music-block-vector-32312662.jpg");
-
-        Set<String> strRoles = signupRequest.getRoles();
-        Set<Role> roles = new HashSet<>();
-        if(strRoles == null){
-            Role userRole = roleRepository.findRoleByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            Role adminRole = roleRepository.findRoleByName(ERole.ROLE_ADMIN)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(adminRole);
-        }
-        users.setRole(roles);
+        User users = userService.createNewUser(signupRequest);
         userRepo.save(users);
-        return new  ResponseEntity<>(new MessageResponse("REGISTER SUCCESSFULLY"), HttpStatus.OK);
+        try {
+            emailSender.send(users, siteUrl);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        return new  ResponseEntity<>(new MessageResponse("Register successfully"), HttpStatus.OK);
     }
 }

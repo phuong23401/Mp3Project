@@ -1,11 +1,11 @@
 package com.karaoke.mp3project.controller;
 
 import com.karaoke.mp3project.dto.respon.MessageResponse;
-import com.karaoke.mp3project.model.PlayList;
-import com.karaoke.mp3project.model.Song;
-import com.karaoke.mp3project.model.User;
+import com.karaoke.mp3project.model.*;
 import com.karaoke.mp3project.security.userprincipal.UserDtService;
+import com.karaoke.mp3project.service.impl.LikePlayListService;
 import com.karaoke.mp3project.service.impl.PlayListService;
+import com.karaoke.mp3project.service.impl.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +26,13 @@ public class PlayListController {
     private PlayListService playlistService;
 
     @Autowired
+    private LikePlayListService likePlayListService;
+
+    @Autowired
     private UserDtService userDtService;
+
+    @Autowired
+    private SongService songService;
 
 
     @PostMapping("/create")
@@ -34,49 +40,35 @@ public class PlayListController {
         if (playlist.getAvatarUrl() == null || playlist.getAvatarUrl().trim().isEmpty()) {
             return new ResponseEntity<>(new MessageResponse("No Avatar"), HttpStatus.BAD_REQUEST);
         }
-        User userCurrent = userDtService.getCurrentUser();
-        Timestamp createdTime = new Timestamp(System.currentTimeMillis());
-        Timestamp updatedTime = new Timestamp(System.currentTimeMillis());
-        Long listenNum = Long.valueOf(0);
-
-        playlist.setCreatedTime(createdTime);
-        playlist.setUpdatedTime(updatedTime);
-        playlist.setListen(listenNum);
-        playlist.setUser(userCurrent);
         playlistService.savePlaylist(playlist);
         return new ResponseEntity<>(new MessageResponse("Create playlist successfully !"), HttpStatus.OK);
     }
 
-    @PutMapping("/edit/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> editPlaylist(@PathVariable Long id, @Valid @RequestBody PlayList newPlaylist) {
         Optional<PlayList> playList = playlistService.findOne(id);
+        User user = userDtService.getCurrentUser();
         if (!playList.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             if (newPlaylist.getAvatarUrl() == null || newPlaylist.getAvatarUrl().trim().isEmpty()) {
-                return new ResponseEntity<>(new MessageResponse("No Avatar"), HttpStatus.OK);
+                return new ResponseEntity<>(new MessageResponse("Novatar"), HttpStatus.OK);
             }
-            Timestamp createdTime = new Timestamp(System.currentTimeMillis());
-            Timestamp updatedTime = new Timestamp(System.currentTimeMillis());
-            Long listenNum = Long.valueOf(0);
-
-            newPlaylist.setCreatedTime(createdTime);
-            newPlaylist.setUpdatedTime(updatedTime);
-            newPlaylist.setListen(listenNum);
-            newPlaylist.setId(id);
-            playlistService.savePlaylist(newPlaylist);
-            return new ResponseEntity<>(new MessageResponse("Update playlist successfully !"), HttpStatus.OK);
+            newPlaylist.setUser(user);
+            playlistService.editPlaylist(id, newPlaylist);
+            return new ResponseEntity<>(new MessageResponse("Successfully"), HttpStatus.OK);
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePlaylist(@PathVariable Long id) {
+    @PostMapping("/delete")
+    public ResponseEntity<?> deletePlaylist(@RequestBody Long id) {
         Optional<PlayList> playlist = playlistService.findOne(id);
         if (!playlist.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        playlist.get().setUser(null);
         playlistService.deletePlaylist(playlist.get().getId());
-        return new ResponseEntity<>(new MessageResponse("Delete playlist successfully !"), HttpStatus.OK);
+        return new ResponseEntity<>(new MessageResponse("Successfully!"), HttpStatus.OK);
     }
 
     @GetMapping()
@@ -89,13 +81,24 @@ public class PlayListController {
         return new ResponseEntity<>(playlist, HttpStatus.OK);
     }
 
-    @GetMapping("/getAllSong/{id}")
-    public ResponseEntity<List<Song>> getAllSongInPlaylist(@PathVariable Long id) {
-        List<Song> songList = playlistService.findAllSongInPlaylist(id);
-        System.out.println(songList);
-        if (songList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(songList, HttpStatus.OK);
+
+
+
+
+    @PutMapping("/update")
+    public ResponseEntity<MessageResponse> editPlaylist(@RequestBody PlayList playlist) {
+        playlistService.savePlaylist(playlist);
+        String message = "Update playlist successfully!";
+        return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
     }
+
+    @PutMapping("/addsong")
+    public ResponseEntity<MessageResponse> addSongToPlaylist(@RequestBody AddSongToPlaylistReq addSongToPlaylistReq) {
+        Song song = songService.findById(Long.parseLong(addSongToPlaylistReq.getIdSong()));
+        Optional<PlayList> playList =playlistService.findOne(Long.parseLong(addSongToPlaylistReq.getIdPlaylist()));
+        playlistService.addSongToPlaylist(song,playList.get());
+        String message = "Add playlist successfully!";
+        return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
+    }
+
 }

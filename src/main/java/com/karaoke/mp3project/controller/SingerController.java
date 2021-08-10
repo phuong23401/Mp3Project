@@ -57,14 +57,7 @@ public class SingerController {
         return new ResponseEntity<>(new MessageResponse("Done"), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/singer", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> getAllSinger() {
-        ArrayList<Singer> singersList = singerService.findAll();
-        if (singersList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(singersList, HttpStatus.OK);
-    }
+
 
     @PostMapping("/test")
     public ResponseEntity<?> findSingerByName(@Valid @RequestBody String name) {
@@ -75,4 +68,12 @@ public class SingerController {
         return new ResponseEntity<>(singer, HttpStatus.OK);
     }
 
+    @GetMapping("/getSingerBySongId/{id}")
+    public ResponseEntity<List<Singer>> getSingerBySongId(@PathVariable Long id) {
+        List<Singer> singerList = singerService.getSingerBySongId(id);
+        if (singerList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(singerList, HttpStatus.OK);
+    }
 }

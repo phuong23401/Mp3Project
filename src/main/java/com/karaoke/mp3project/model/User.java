@@ -32,11 +32,45 @@ public class User {
 
     private String avatarUrl;
 
+    private Boolean isVerifyEmail = false;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> role = new HashSet<>();
+
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
+
+    public User(Long id, String name, String email, String username, String password, String gender, String hobbies, String avatarUrl, Boolean isVerifyEmail, Set<Role> role, String verificationCode) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.gender = gender;
+        this.hobbies = hobbies;
+        this.avatarUrl = avatarUrl;
+        this.isVerifyEmail = isVerifyEmail;
+        this.role = role;
+        this.verificationCode = verificationCode;
+    }
+
+    public User(Long id, String name, String email, String username, String password, String gender, String hobbies, String avatarUrl, Boolean isVerifyEmail, Set<Role> role) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.gender = gender;
+        this.hobbies = hobbies;
+        this.avatarUrl = avatarUrl;
+        this.isVerifyEmail = isVerifyEmail;
+        this.role = role;
+    }
+
+
 
     public User() {
     }
@@ -155,5 +189,20 @@ public class User {
 
     public void setRole(Set<Role> role) {
         this.role = role;
+    }
+    public Boolean getVerifyEmail() {
+        return isVerifyEmail;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public void setVerifyEmail(Boolean verifyEmail) {
+        isVerifyEmail = verifyEmail;
     }
 }

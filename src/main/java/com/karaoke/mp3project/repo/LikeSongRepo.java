@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface LikeSongRepo extends JpaRepository<LikeSong, Long> {
     Iterable<LikeSong> findAllBySong(Song song);
+
     List<LikeSong> findByUserContaining(String username);
 }

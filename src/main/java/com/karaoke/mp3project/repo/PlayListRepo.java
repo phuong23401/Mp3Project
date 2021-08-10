@@ -15,17 +15,8 @@ import java.util.List;
 public interface PlayListRepo extends JpaRepository<PlayList, Long> {
     List<PlayList> findAllByUser(User user);
 
-//    Iterable<PlayList> findAllBySinger(Singer singer);
 
     Iterable<PlayList> findAllByNameContaining(String name);
-//
-//    Iterable<PlayList> findAllBySingerContaining(String singer);
-//
-//    Iterable<PlayList> findAllByAuthorContaining(String author);
-//
-//    Iterable<PlayList> findAllByUserContaining(String user);
-
-    Iterable<PlayList> findAllByOrderByCountLikeDesc();
 
     @Query(value = "select * from `play_list` where `play_list`.`name` like ?", nativeQuery = true)
     List<PlayList> findAllByNamePlayList(String namePlayList);
@@ -39,6 +30,12 @@ public interface PlayListRepo extends JpaRepository<PlayList, Long> {
     @Query(value = "select * from `play_list` order by `count_like` desc limit 10", nativeQuery = true)
     List<PlayList> findAllOrderByNumberOfLike();
 
-    @Query(value = "select * from `song` where `song`.`id` in (select `song_id` from `playlist_song` where `playlist_song`.`playlist_id`= :id )", nativeQuery = true)
-    List<Song> findAllSongInPlaylist(@Param("id") Long id);
+    @Query(value = "select * from `song` where `song`.`id` in (select `song_id` from `playlist_song` where `playlist_song`.`playlist_id` = ?)", nativeQuery = true)
+    List<Song> findAllSongInPlaylist(Long id);
+
+    @Query(value = "select count(`song`.id) from song where song.id in (select `song_id` from `playlist_song` where `playlist_song`.`playlist_id` = ?)", nativeQuery = true)
+    Iterable<Number> countSongInPlaylist(Long id);
+
+    @Query(value ="delete from `playlist_song` where 'song_id' = ?", nativeQuery = true)
+    void deleteSongInThePlaylist(Long id);
 }

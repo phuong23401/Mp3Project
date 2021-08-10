@@ -32,11 +32,15 @@ public class UserController {
         return new ResponseEntity<>(userService.findOne(id), HttpStatus.OK);
     }
 
+    @GetMapping("/get/{id}")
+    public ResponseEntity<User> getUserID(@PathVariable("id") Long id){
+        User user = userService.findOne(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
     @PutMapping("/changeinfor")
     public ResponseEntity<MessageResponse> changeInforMations(@RequestBody UserCurrentUpdate userCurrentUpdate){
         User userCurrent = userDtService.getCurrentUser();
-        System.out.println("user hien tai");
-        System.out.println(userCurrent.toString());
         String message;
         if(userCurrent != null){
             userCurrent.setAvatarUrl(userCurrentUpdate.getAvatarUrl());
@@ -44,10 +48,10 @@ public class UserController {
             userCurrent.setHobbies(userCurrentUpdate.getHobbies());
             userCurrent.setName(userCurrentUpdate.getName());
             userService.updateUser(userCurrent);
-            message = "UPDATE PROFILE SUCCESSFULLY !";
+            message = "Update profile success fully !";
             return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
         }else {
-            message = "UPDATE PROFILE FAILED";
+            message = "Update profile failed";
         }
         return ResponseEntity
                 .badRequest()
@@ -61,10 +65,10 @@ public class UserController {
         if(userService.checkPassword(userCurrent, password.getPassword())){
             userCurrent.setPassword(passwordEncoder.encode(password.getNewPassword()));
             userService.updateUser(userCurrent);
-            message = "CHANGE PASSWORD SUCCESSFULLY !";
+            message = "Change password success fully !";
             return new ResponseEntity<>(new MessageResponse(message), HttpStatus.OK);
         }else {
-            message = "CHANGE PASSWORD FAILED";
+            message = "Change password failed";
         }
         return ResponseEntity
                 .badRequest()
@@ -75,13 +79,10 @@ public class UserController {
     public ResponseEntity<UserCurrentUpdate> getUserByToken() {
         User userCurrent = userDtService.getCurrentUser();
         UserCurrentUpdate userCurrentUpdate = new UserCurrentUpdate();
-
         userCurrentUpdate.setName(userCurrent.getName());
         userCurrentUpdate.setGender(userCurrent.getGender());
         userCurrentUpdate.setHobbies(userCurrent.getHobbies());
         userCurrentUpdate.setAvatarUrl(userCurrent.getAvatarUrl());
-
-        System.out.println(userCurrent);
         return new ResponseEntity<>(userCurrentUpdate, HttpStatus.OK);
     }
 }
