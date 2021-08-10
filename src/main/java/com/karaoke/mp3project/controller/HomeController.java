@@ -1,13 +1,16 @@
 package com.karaoke.mp3project.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.karaoke.mp3project.dto.respon.MessageResponse;
 import com.karaoke.mp3project.model.*;
 import com.karaoke.mp3project.security.userprincipal.UserDtService;
 import com.karaoke.mp3project.service.ICommentPlayListService;
 import com.karaoke.mp3project.service.ICommentSongService;
 import com.karaoke.mp3project.service.impl.*;
+import org.springframework.core.io.Resource;
 import com.karaoke.mp3project.security.userprincipal.UserDtService;
 import com.karaoke.mp3project.service.impl.LikeSongService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +18,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +29,10 @@ import java.util.Optional;
 @RequestMapping("home")
 @RestController
 public class HomeController {
+    @Autowired
+    private SingerService singerService;
+    @Autowired
+    private FileService fileService;
     @Autowired
     private SongService songService;
 
@@ -45,6 +56,27 @@ public class HomeController {
     @Autowired
     private PlayListService playListService;
 
+    @GetMapping("/employees/download")
+    public ResponseEntity<byte[]> downloadFile() throws Exception {
+
+        List<Song> employees = fileService.getEmployeeList();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(employees);
+        byte[] isr = json.getBytes();
+
+        String fileName = "employees.json";
+
+        HttpHeaders respHeaders = new HttpHeaders();
+        respHeaders.setContentLength(isr.length);
+        respHeaders.setContentType(new MediaType("mp3", "mpeg"));
+        respHeaders.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        respHeaders.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+
+        return new ResponseEntity<byte[]>(isr, respHeaders, HttpStatus.OK);
+    }
+
+
+
     @GetMapping("/new")
     public ResponseEntity<Iterable<Song>> getAllSongNew() {
         List<Song> songs = songService.findAll();
@@ -67,6 +99,14 @@ public class HomeController {
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatus.NOT_FOUND);
         }
+    }
+    @RequestMapping(value = "/singer", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getAllSinger() {
+        ArrayList<Singer> singersList = singerService.findAll();
+        if (singersList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(singersList, HttpStatus.OK);
     }
 
     @GetMapping("/song-like-up/{id}")
@@ -216,5 +256,6 @@ public class HomeController {
     private ResponseEntity<Optional<PlayList>> getPlaylist(@PathVariable Long id){
         return new ResponseEntity<>(playlistService.findById(id), HttpStatus.OK) ;
     }
+
 
 }

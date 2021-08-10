@@ -35,6 +35,8 @@ public class Song {
     private Long countLike = 0L;
     private String lyric;
     private Long numberOfView;
+    private String contentType;
+    private Long size;
 
     @ManyToOne(cascade = {CascadeType.ALL})
     private User user;
@@ -63,6 +65,27 @@ public class Song {
 
 
     public Song() {
+    }
+
+    public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, String lyric, Long numberOfView, String contentType, Long size, User user, Category categories, List<Singer> singer, List<PlayList> playlist, String author) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.tags = tags;
+        this.avatarUrl = avatarUrl;
+        this.fileUrl = fileUrl;
+        this.createdTime = createdTime;
+        this.updatedTime = updatedTime;
+        this.countLike = countLike;
+        this.lyric = lyric;
+        this.numberOfView = numberOfView;
+        this.contentType = contentType;
+        this.size = size;
+        this.user = user;
+        this.categories = categories;
+        this.singer = singer;
+        this.playlist = playlist;
+        this.author = author;
     }
 
     public Song(Long id, String name, String description, String tags, String avatarUrl, String fileUrl, Timestamp createdTime, Timestamp updatedTime, Long countLike, String lyric, Long numberOfView, User user, Category categories, List<Singer> singer, List<PlayList> playlist) {
@@ -146,6 +169,22 @@ public class Song {
         this.categories = categories;
         this.singer = singer;
         this.playlist = playlist;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
     }
 
     public String getAuthor() {
