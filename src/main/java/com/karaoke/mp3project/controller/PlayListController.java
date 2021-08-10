@@ -51,7 +51,7 @@ public class PlayListController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             if (newPlaylist.getAvatarUrl() == null || newPlaylist.getAvatarUrl().trim().isEmpty()) {
-                return new ResponseEntity<>(new MessageResponse("NoAvatar"), HttpStatus.OK);
+                return new ResponseEntity<>(new MessageResponse("Novatar"), HttpStatus.OK);
             }
             playlistService.editPlaylist(id, newPlaylist);
             return new ResponseEntity<>(new MessageResponse("Successfully"), HttpStatus.OK);
